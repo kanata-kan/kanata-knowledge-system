@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanata Knowledge System (KKS)
+
+A Developer Knowledge Operating System — a personal engineering intelligence dashboard for externalizing and retrieving developer knowledge.
+
+## Vision
+
+KKS is a high-speed retrieval system for the working developer's accumulated knowledge. It centralizes patterns, commands, architectural decisions, AI prompts, and debugging heuristics into a single, fast, searchable surface.
+
+## Tech Stack
+
+- **Framework:** Next.js 15+ with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Content:** MDX with gray-matter + next-mdx-remote
+- **Search:** Fuse.js (client-side fuzzy search)
+- **Syntax Highlighting:** Shiki (server-side)
+- **Fonts:** Inter (UI) + JetBrains Mono (code)
+
+## Architecture
+
+- **Server Components by default** — Minimal client JavaScript
+- **Content-as-code** — MDX files in `/content` directory as database
+- **Static generation** — All routes pre-rendered at build time
+- **No database in Phase 1** — Filesystem-based MDX
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/              # Next.js App Router pages
+├── components/       # React components
+│   ├── layout/      # Dashboard layout components
+│   ├── knowledge/   # Knowledge entry components
+│   ├── search/      # Search and filter components
+│   ├── code/        # Code block components
+│   └── ui/          # Reusable UI components
+├── content/         # MDX content files by category
+├── docs/            # Documentation files
+├── lib/             # Utility functions and data access
+└── types/           # TypeScript type definitions
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content Categories
 
-## Learn More
+- nextjs
+- mongodb
+- express
+- typescript
+- architecture
+- debugging
+- snippets
+- cli
+- ai
+- workflows
+- deployment
+- performance
+- security
 
-To learn more about Next.js, take a look at the following resources:
+## Phase 1 Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Static site with MDX content
+- Client-side search with Fuse.js
+- Command palette (Cmd+K)
+- Basic sidebar navigation
+- Code blocks with Shiki highlighting
+- Copy to clipboard
+- Mobile responsive
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Performance Targets
 
-## Deploy on Vercel
+- LCP < 1.2s
+- FID/INP < 100ms
+- CLS < 0.05
+- TTFB < 200ms (CDN edge)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
