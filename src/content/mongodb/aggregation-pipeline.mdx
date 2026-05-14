@@ -1,0 +1,86 @@
+---
+title: "MongoDB Aggregation Pipeline"
+slug: "aggregation-pipeline"
+category: "mongodb"
+type: "reference"
+difficulty: "intermediate"
+tags: ["aggregation", "pipeline", "queries"]
+summary: "Complete reference for MongoDB aggregation pipeline stages with practical examples."
+createdAt: "2025-01-15"
+updatedAt: "2025-04-20"
+pinned: true
+technologies: ["mongodb", "node.js"]
+---
+
+## Pipeline Basics
+
+An aggregation pipeline is an array of stages that process documents sequentially.
+
+```typescript
+const results = await collection.aggregate([
+  { $match: { status: 'active' } },
+  { $group: { _id: '$category', count: { $sum: 1 } } },
+  { $sort: { count: -1 } },
+]).toArray()
+```
+
+## Common Stages
+
+### $match — Filter documents
+
+```typescript
+{ $match: { age: { $gte: 18 }, status: 'active' } }
+```
+
+### $group — Group and aggregate
+
+```typescript
+{
+  $group: {
+    _id: '$department',
+    totalSalary: { $sum: '$salary' },
+    avgAge: { $avg: '$age' },
+    count: { $sum: 1 },
+    employees: { $push: '$name' }
+  }
+}
+```
+
+### $project — Reshape documents
+
+```typescript
+{
+  $project: {
+    fullName: { $concat: ['$firstName', ' ', '$lastName'] },
+    yearOfBirth: { $subtract: [2025, '$age'] },
+    _id: 0
+  }
+}
+```
+
+### $lookup — Join collections
+
+```typescript
+{
+  $lookup: {
+    from: 'orders',
+    localField: '_id',
+    foreignField: 'userId',
+    as: 'userOrders'
+  }
+}
+```
+
+### $unwind — Flatten arrays
+
+```typescript
+{ $unwind: '$tags' }
+// { tags: ['a', 'b'] } becomes two docs: { tags: 'a' }, { tags: 'b' }
+```
+
+## Performance Tips
+
+- Always `$match` early to reduce documents processed
+- Create indexes on fields used in `$match` and `$sort`
+- Use `$project` to drop unnecessary fields early
+- Use `allowDiskUse: true` for large datasets

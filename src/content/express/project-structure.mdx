@@ -1,0 +1,103 @@
+---
+title: "Express Project Structure"
+slug: "project-structure"
+category: "express"
+type: "note"
+difficulty: "beginner"
+tags: ["structure", "organization", "best-practices"]
+summary: "Clean and scalable folder structure for Express.js APIs with TypeScript."
+createdAt: "2025-02-15"
+updatedAt: "2025-03-20"
+pinned: false
+technologies: ["express", "node.js", "typescript"]
+---
+
+## Recommended Structure
+
+```
+src/
+├── config/
+│   ├── database.ts
+│   ├── env.ts
+│   └── cors.ts
+├── controllers/
+│   ├── user.controller.ts
+│   └── post.controller.ts
+├── middleware/
+│   ├── auth.ts
+│   ├── validate.ts
+│   └── errorHandler.ts
+├── models/
+│   ├── user.model.ts
+│   └── post.model.ts
+├── routes/
+│   ├── index.ts
+│   ├── user.routes.ts
+│   └── post.routes.ts
+├── services/
+│   ├── user.service.ts
+│   └── post.service.ts
+├── types/
+│   └── index.ts
+├── utils/
+│   └── helpers.ts
+├── app.ts
+└── server.ts
+```
+
+## Key Files
+
+### app.ts — Express app setup
+
+```typescript
+import express from 'express'
+import cors from 'cors'
+import { errorHandler } from './middleware/errorHandler'
+import { routes } from './routes'
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+app.use('/api', routes)
+app.use(errorHandler)
+
+export default app
+```
+
+### server.ts — Entry point
+
+```typescript
+import app from './app'
+import { env } from './config/env'
+import { connectDatabase } from './config/database'
+
+async function start() {
+  await connectDatabase()
+  app.listen(env.PORT, () => {
+    console.log(`Server running on port ${env.PORT}`)
+  })
+}
+
+start()
+```
+
+### routes/index.ts — Route aggregation
+
+```typescript
+import { Router } from 'express'
+import userRoutes from './user.routes'
+import postRoutes from './post.routes'
+
+export const routes = Router()
+
+routes.use('/users', userRoutes)
+routes.use('/posts', postRoutes)
+```
+
+## Principles
+
+- **Separate concerns**: Controllers handle HTTP, services handle business logic
+- **Single entry point**: `app.ts` configures Express, `server.ts` boots it
+- **Centralized routes**: Aggregate all routes in `routes/index.ts`
+- **Environment config**: Never scatter `process.env` — centralize in `config/env.ts`

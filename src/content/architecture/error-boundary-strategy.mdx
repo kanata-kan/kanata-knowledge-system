@@ -1,0 +1,82 @@
+---
+title: "Error Boundary Strategy in Next.js"
+slug: "error-boundary-strategy"
+category: "architecture"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["error-boundary", "error-handling", "resilience"]
+summary: "How to implement error boundaries in Next.js App Router with error.tsx and not-found.tsx conventions."
+createdAt: "2025-04-05"
+updatedAt: "2025-05-11"
+pinned: false
+technologies: ["next.js", "react", "typescript"]
+---
+
+## error.tsx — Route Error Boundary
+
+Next.js uses `error.tsx` files as automatic error boundaries.
+
+```typescript
+// app/knowledge/[category]/error.tsx
+'use client'
+
+export default function ErrorPage({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center p-8">
+      <h2 className="text-xl font-bold mb-4">Something went wrong</h2>
+      <p className="text-muted mb-4">{error.message}</p>
+      <button
+        onClick={reset}
+        className="px-4 py-2 bg-accent text-background rounded"
+      >
+        Try again
+      </button>
+    </div>
+  )
+}
+```
+
+## not-found.tsx — 404 Pages
+
+```typescript
+// app/not-found.tsx
+export default function NotFound() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[50vh]">
+      <h1 className="text-4xl font-bold mb-2">404</h1>
+      <p className="text-muted">Page not found</p>
+    </div>
+  )
+}
+```
+
+## Key Rules
+
+1. `error.tsx` must be a Client Component (`'use client'`)
+2. It catches errors in the route segment and all its children
+3. It does NOT catch errors in the layout at the same level — use parent error boundary
+4. `reset()` re-renders the route segment without a full page reload
+5. `global-error.tsx` at app root catches errors in the root layout
+
+## Hierarchy
+
+```
+app/
+├── error.tsx          ← catches errors in layout children
+├── layout.tsx
+├── knowledge/
+│   ├── error.tsx      ← catches errors in knowledge routes
+│   ├── [category]/
+│   │   ├── error.tsx  ← catches errors in category pages
+│   │   └── page.tsx
+```
+
+## Production Tip
+
+In production, `error.message` is generic for security. Use `error.digest` to correlate with server logs.

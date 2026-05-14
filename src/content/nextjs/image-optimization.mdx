@@ -1,0 +1,79 @@
+---
+title: "Next.js Image Optimization"
+slug: "image-optimization"
+category: "nextjs"
+type: "reference"
+difficulty: "beginner"
+tags: ["images", "optimization", "performance", "next-image"]
+summary: "Using next/image for automatic optimization, responsive images, and priority loading."
+createdAt: "2025-04-01"
+updatedAt: "2025-05-11"
+pinned: false
+technologies: ["next.js"]
+---
+
+## Basic Usage
+
+```typescript
+import Image from 'next/image'
+
+export function Avatar() {
+  return (
+    <Image
+      src="/avatar.jpg"
+      alt="Profile picture"
+      width={64}
+      height={64}
+      className="rounded-full"
+    />
+  )
+}
+```
+
+## Responsive Image
+
+```typescript
+<Image
+  src="/hero.jpg"
+  alt="Hero"
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="object-cover"
+  priority // for above-the-fold images
+/>
+```
+
+## Remote Images
+
+```typescript
+// next.config.ts
+const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
+}
+```
+
+## Key Props
+
+| Prop | Purpose |
+|------|---------|
+| `priority` | Preload (LCP images) |
+| `fill` | Fill parent container |
+| `sizes` | Responsive breakpoints |
+| `quality` | 1-100 (default 75) |
+| `placeholder="blur"` | Blur-up loading |
+| `loading="lazy"` | Default behavior |
+
+## Performance Tips
+
+- Always add `priority` to LCP images (hero, above-fold)
+- Use `fill` + `sizes` for responsive layouts
+- Set `quality={85}` for photography, `quality={70}` for decorative
+- Use WebP/AVIF (automatic in Next.js)
+- Specify width/height to prevent CLS

@@ -1,0 +1,95 @@
+---
+title: "Feature Flags Pattern"
+slug: "feature-flags-pattern"
+category: "architecture"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["feature-flags", "deployment", "architecture", "progressive-delivery"]
+summary: "Implementing feature flags without external services — environment-based and user-based flag strategies."
+createdAt: "2025-04-14"
+updatedAt: "2025-05-10"
+pinned: false
+technologies: ["typescript", "next.js"]
+---
+
+## Simple Environment Flags
+
+```typescript
+// lib/flags.ts
+export const flags = {
+  newDashboard: process.env.NEXT_PUBLIC_FLAG_NEW_DASHBOARD === 'true',
+  darkMode: process.env.NEXT_PUBLIC_FLAG_DARK_MODE === 'true',
+  betaSearch: process.env.NEXT_PUBLIC_FLAG_BETA_SEARCH === 'true',
+} as const
+
+export type FeatureFlag = keyof typeof flags
+```
+
+## Usage in Components
+
+```typescript
+import { flags } from '@/lib/flags'
+
+export function Dashboard() {
+  if (flags.newDashboard) {
+    return <NewDashboard />
+  }
+  return <LegacyDashboard />
+}
+```
+
+## Runtime Flags with Config
+
+```typescript
+type FlagConfig = {
+  enabled: boolean
+  percentage?: number  // gradual rollout
+  allowlist?: string[] // specific users
+}
+
+const flagConfig: Record<string, FlagConfig> = {
+  newSearch: { enabled: true, percentage: 50 },
+  advancedFilters: { enabled: true, allowlist: ['user-123'] },
+  darkMode: { enabled: false },
+}
+
+export function isEnabled(flag: string, userId?: string): boolean {
+  const config = flagConfig[flag]
+  if (!config || !config.enabled) return false
+
+  if (config.allowlist && userId) {
+    return config.allowlist.includes(userId)
+  }
+
+  if (config.percentage !== undefined) {
+    // Deterministic hash for consistent experience
+    const hash = simpleHash(userId || 'anonymous')
+    return (hash % 100) < config.percentage
+  }
+
+  return true
+}
+```
+
+## Server Component Flag
+
+```typescript
+// Use in Server Components for zero client JS
+export default function Page() {
+  const showBeta = isEnabled('betaFeature')
+
+  return (
+    <main>
+      {showBeta ? <BetaComponent /> : <StableComponent />}
+    </main>
+  )
+}
+```
+
+## Best Practices
+
+- Remove flags after full rollout (no flag debt)
+- Use descriptive names with context
+- Default to `false` (off)
+- Log flag evaluations for debugging
+- Test both paths in CI

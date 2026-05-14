@@ -1,0 +1,105 @@
+---
+title: "Rate Limiting in Express"
+slug: "rate-limiting"
+category: "express"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["rate-limiting", "security", "middleware", "redis"]
+summary: "Implementing rate limiting for Express APIs — in-memory for dev, Redis for production."
+createdAt: "2025-04-25"
+updatedAt: "2025-05-10"
+pinned: false
+technologies: ["express", "node.js", "redis"]
+---
+
+## Simple In-Memory Rate Limiter
+
+```typescript
+import { Request, Response, NextFunction } from 'express'
+
+type RateLimitEntry = { count: number; resetAt: number }
+
+function createRateLimiter(windowMs: number, maxRequests: number) {
+  const store = new Map<string, RateLimitEntry>()
+
+  // Cleanup expired entries periodically
+  setInterval(() => {
+    const now = Date.now()
+    for (const [key, entry] of store) {
+      if (now > entry.resetAt) store.delete(key)
+    }
+  }, windowMs)
+
+  return (req: Request, res: Response, next: NextFunction) => {
+    const key = req.ip || 'unknown'
+    const now = Date.now()
+    const entry = store.get(key)
+
+    if (!entry || now > entry.resetAt) {
+      store.set(key, { count: 1, resetAt: now + windowMs })
+      return next()
+    }
+
+    if (entry.count >= maxRequests) {
+      res.set('Retry-After', String(Math.ceil((entry.resetAt - now) / 1000)))
+      return res.status(429).json({
+        error: 'Too many requests',
+        retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+      })
+    }
+
+    entry.count++
+    next()
+  }
+}
+```
+
+## Usage
+
+```typescript
+// Global: 100 requests per minute
+app.use(createRateLimiter(60_000, 100))
+
+// Route-specific: 5 login attempts per 15 minutes
+app.post('/auth/login',
+  createRateLimiter(15 * 60_000, 5),
+  loginHandler
+)
+```
+
+## Redis-Backed (Production)
+
+```typescript
+import Redis from 'ioredis'
+
+const redis = new Redis(process.env.REDIS_URL!)
+
+function createRedisRateLimiter(windowMs: number, maxRequests: number) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const key = `rl:${req.ip}`
+
+    const current = await redis.incr(key)
+    if (current === 1) {
+      await redis.pexpire(key, windowMs)
+    }
+
+    if (current > maxRequests) {
+      const ttl = await redis.pttl(key)
+      res.set('Retry-After', String(Math.ceil(ttl / 1000)))
+      return res.status(429).json({ error: 'Too many requests' })
+    }
+
+    next()
+  }
+}
+```
+
+## Response Headers (Best Practice)
+
+```typescript
+res.set({
+  'X-RateLimit-Limit': String(maxRequests),
+  'X-RateLimit-Remaining': String(maxRequests - entry.count),
+  'X-RateLimit-Reset': String(Math.ceil(entry.resetAt / 1000)),
+})
+```

@@ -1,0 +1,98 @@
+---
+title: "Discriminated Unions for State Machines"
+slug: "discriminated-unions"
+category: "typescript"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["typescript", "unions", "state-machine", "type-safety"]
+summary: "Using discriminated unions to model application state safely — async states, events, and reducers."
+createdAt: "2025-04-02"
+updatedAt: "2025-05-13"
+pinned: false
+technologies: ["typescript", "react"]
+---
+
+## Async State Pattern
+
+```typescript
+type AsyncState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: Error }
+
+function renderState<T>(state: AsyncState<T>) {
+  switch (state.status) {
+    case 'idle':
+      return <p>Ready</p>
+    case 'loading':
+      return <Spinner />
+    case 'success':
+      return <DataView data={state.data} />  // data is typed!
+    case 'error':
+      return <ErrorView error={state.error} /> // error is typed!
+  }
+}
+```
+
+## Event System
+
+```typescript
+type AppEvent =
+  | { type: 'USER_LOGIN'; payload: { email: string } }
+  | { type: 'USER_LOGOUT' }
+  | { type: 'POST_CREATED'; payload: { id: string; title: string } }
+  | { type: 'POST_DELETED'; payload: { id: string } }
+
+function handleEvent(event: AppEvent) {
+  switch (event.type) {
+    case 'USER_LOGIN':
+      console.log(event.payload.email)  // narrowed
+      break
+    case 'POST_CREATED':
+      console.log(event.payload.title)  // narrowed
+      break
+  }
+}
+```
+
+## Reducer Pattern
+
+```typescript
+type State = { count: number; lastAction: string }
+
+type Action =
+  | { type: 'increment'; amount: number }
+  | { type: 'decrement'; amount: number }
+  | { type: 'reset' }
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + action.amount, lastAction: 'increment' }
+    case 'decrement':
+      return { count: state.count - action.amount, lastAction: 'decrement' }
+    case 'reset':
+      return { count: 0, lastAction: 'reset' }
+  }
+}
+```
+
+## Exhaustive Check
+
+Ensure all cases are handled:
+
+```typescript
+function assertNever(value: never): never {
+  throw new Error(`Unhandled case: ${JSON.stringify(value)}`)
+}
+
+function handleAction(action: Action) {
+  switch (action.type) {
+    case 'increment': return
+    case 'decrement': return
+    case 'reset': return
+    default: assertNever(action)  // compile error if case missed
+  }
+}
+```

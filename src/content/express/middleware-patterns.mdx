@@ -1,0 +1,105 @@
+---
+title: "Express Middleware Patterns"
+slug: "middleware-patterns"
+category: "express"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["middleware", "error-handling", "async"]
+summary: "Essential middleware patterns for Express.js including async error handling and composition."
+createdAt: "2025-01-25"
+updatedAt: "2025-04-10"
+pinned: false
+technologies: ["express", "node.js", "typescript"]
+---
+
+## Basic Middleware Structure
+
+```typescript
+import { Request, Response, NextFunction } from 'express'
+
+function logger(req: Request, res: Response, next: NextFunction) {
+  console.log(`${req.method} ${req.path}`)
+  next()
+}
+
+app.use(logger)
+```
+
+## Async Error Wrapper
+
+Express doesn't catch async errors by default. Wrap handlers:
+
+```typescript
+type AsyncHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
+
+function asyncHandler(fn: AsyncHandler) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    fn(req, res, next).catch(next)
+  }
+}
+
+// Usage
+app.get('/users', asyncHandler(async (req, res) => {
+  const users = await db.users.find()
+  res.json(users)
+}))
+```
+
+## Global Error Handler
+
+Always define this LAST:
+
+```typescript
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack)
+
+  const statusCode = res.statusCode !== 200 ? res.statusCode : 500
+
+  res.status(statusCode).json({
+    error: {
+      message: err.message,
+      ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    },
+  })
+})
+```
+
+## Middleware Composition
+
+Chain related middleware into a single unit:
+
+```typescript
+function authMiddleware() {
+  return [
+    validateToken,
+    attachUser,
+    checkPermissions,
+  ]
+}
+
+app.get('/admin', ...authMiddleware(), adminHandler)
+```
+
+## Request Validation Middleware
+
+```typescript
+import { z } from 'zod'
+
+function validate(schema: z.ZodSchema) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req.body)
+    if (!result.success) {
+      return res.status(400).json({ errors: result.error.flatten() })
+    }
+    req.body = result.data
+    next()
+  }
+}
+
+const createUserSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+})
+
+app.post('/users', validate(createUserSchema), createUserHandler)
+```

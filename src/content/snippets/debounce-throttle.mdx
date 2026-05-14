@@ -1,0 +1,82 @@
+---
+title: "Debounce & Throttle Implementations"
+slug: "debounce-throttle"
+category: "snippets"
+type: "snippet"
+difficulty: "beginner"
+tags: ["performance", "debounce", "throttle", "hooks"]
+summary: "Type-safe debounce and throttle utilities plus React hooks for search inputs and scroll handlers."
+createdAt: "2025-03-25"
+updatedAt: "2025-05-09"
+pinned: false
+technologies: ["typescript", "react"]
+---
+
+## Debounce Function
+
+```typescript
+function debounce<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout>
+
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => fn(...args), delay)
+  }
+}
+```
+
+## Throttle Function
+
+```typescript
+function throttle<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  limit: number
+): (...args: Parameters<T>) => void {
+  let inThrottle = false
+
+  return (...args: Parameters<T>) => {
+    if (!inThrottle) {
+      fn(...args)
+      inThrottle = true
+      setTimeout(() => { inThrottle = false }, limit)
+    }
+  }
+}
+```
+
+## React Hook: useDebounce
+
+```typescript
+import { useState, useEffect } from 'react'
+
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+
+  return debounced
+}
+
+// Usage
+function SearchInput() {
+  const [query, setQuery] = useState('')
+  const debouncedQuery = useDebounce(query, 300)
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      performSearch(debouncedQuery)
+    }
+  }, [debouncedQuery])
+}
+```
+
+## When to Use Which
+
+- **Debounce**: Search inputs, resize handlers, form validation
+- **Throttle**: Scroll handlers, mouse move, API polling

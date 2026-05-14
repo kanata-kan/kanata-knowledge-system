@@ -1,0 +1,101 @@
+---
+title: "MongoDB Schema Design Patterns"
+slug: "schema-design-patterns"
+category: "mongodb"
+type: "pattern"
+difficulty: "advanced"
+tags: ["schema", "data-modeling", "embedding", "referencing"]
+summary: "When to embed vs reference, and common schema patterns for MongoDB document design."
+createdAt: "2025-02-25"
+updatedAt: "2025-05-06"
+pinned: false
+technologies: ["mongodb"]
+---
+
+## Embed vs Reference
+
+### Embed When:
+- Data is always accessed together
+- One-to-few relationship (< 100)
+- Data doesn't change independently
+- You need atomic reads
+
+### Reference When:
+- Data is accessed independently
+- One-to-many or many-to-many
+- Data is large or grows unbounded
+- Multiple documents need the same data
+
+## Pattern: Embedded Subdocument
+
+```typescript
+// Good for: user + addresses (1:few)
+{
+  _id: ObjectId("..."),
+  name: "Alice",
+  addresses: [
+    { type: "home", street: "123 Main St", city: "NYC" },
+    { type: "work", street: "456 Corp Ave", city: "SF" }
+  ]
+}
+```
+
+## Pattern: Bucket
+
+Group time-series data into buckets:
+
+```typescript
+// Instead of one doc per measurement
+{
+  sensorId: "temp-01",
+  date: "2025-05-10",
+  readings: [
+    { time: "08:00", value: 22.5 },
+    { time: "08:05", value: 22.7 },
+    // ... up to 200 per bucket
+  ],
+  count: 2,
+  sum: 45.2
+}
+```
+
+## Pattern: Extended Reference
+
+Store frequently-accessed fields from referenced doc:
+
+```typescript
+// Order document with extended reference to user
+{
+  _id: ObjectId("..."),
+  items: [...],
+  // Instead of just userId, store what you need for display
+  customer: {
+    _id: ObjectId("..."),
+    name: "Alice",       // duplicated for read perf
+    email: "alice@..."   // duplicated for read perf
+  }
+}
+```
+
+## Pattern: Computed
+
+Pre-compute aggregations at write time:
+
+```typescript
+{
+  _id: ObjectId("..."),
+  title: "My Post",
+  content: "...",
+  // Pre-computed
+  commentCount: 42,
+  lastCommentAt: ISODate("2025-05-10"),
+  topTags: ["mongodb", "patterns"]
+}
+```
+
+## Anti-Patterns
+
+- Unbounded arrays (grows forever → use bucketing)
+- Massive documents (> 16MB limit)
+- Deeply nested updates (hard to query/index)
+- Normalizing everything (you're not in SQL)

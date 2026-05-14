@@ -1,0 +1,912 @@
+[
+  {
+    "title": "API Error Response Standard",
+    "slug": "api-error-response-standard",
+    "category": "architecture",
+    "type": "reference",
+    "tags": [
+      "api",
+      "error-handling",
+      "standards",
+      "rest"
+    ],
+    "summary": "Consistent error response format for REST APIs — structure, status codes, and examples.",
+    "difficulty": "beginner",
+    "technologies": [
+      "node.js",
+      "express",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Caching Strategy for Web Applications",
+    "slug": "caching-strategy",
+    "category": "architecture",
+    "type": "note",
+    "tags": [
+      "caching",
+      "performance",
+      "cdn",
+      "revalidation"
+    ],
+    "summary": "Multi-layer caching strategy — browser cache, CDN edge, Next.js cache, and runtime cache patterns.",
+    "difficulty": "advanced",
+    "technologies": [
+      "next.js",
+      "vercel",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Clean Folder Structure Principles",
+    "slug": "clean-folder-structure",
+    "category": "architecture",
+    "type": "note",
+    "tags": [
+      "structure",
+      "organization",
+      "scalability"
+    ],
+    "summary": "Principles for organizing code in scalable applications — feature-based vs layer-based approaches.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript",
+      "react",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Dependency Injection in TypeScript",
+    "slug": "dependency-injection-patterns",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "dependency-injection",
+      "testing",
+      "architecture",
+      "patterns"
+    ],
+    "summary": "Lightweight DI patterns for TypeScript without frameworks — constructor injection and factory patterns.",
+    "difficulty": "advanced",
+    "technologies": [
+      "typescript",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Error Boundary Strategy in Next.js",
+    "slug": "error-boundary-strategy",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "error-boundary",
+      "error-handling",
+      "resilience"
+    ],
+    "summary": "How to implement error boundaries in Next.js App Router with error.tsx and not-found.tsx conventions.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Feature Flags Pattern",
+    "slug": "feature-flags-pattern",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "feature-flags",
+      "deployment",
+      "architecture",
+      "progressive-delivery"
+    ],
+    "summary": "Implementing feature flags without external services — environment-based and user-based flag strategies.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript",
+      "next.js"
+    ]
+  },
+  {
+    "title": "Structured Logging Strategy",
+    "slug": "logging-strategy",
+    "category": "architecture",
+    "type": "note",
+    "tags": [
+      "logging",
+      "observability",
+      "debugging",
+      "production"
+    ],
+    "summary": "Structured logging patterns for Node.js apps — log levels, context, and production best practices.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Repository Pattern",
+    "slug": "repository-pattern",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "repository",
+      "data-access",
+      "abstraction",
+      "testing"
+    ],
+    "summary": "Clean data access layer using the Repository pattern — abstraction for database operations.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript",
+      "mongodb",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Server vs Client Components Decision Guide",
+    "slug": "server-vs-client-components",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "server-components",
+      "client-components",
+      "react",
+      "decision"
+    ],
+    "summary": "When to use Server Components vs Client Components — a decision framework for React/Next.js applications.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "JWT Authentication in Express",
+    "slug": "authentication-jwt",
+    "category": "express",
+    "type": "pattern",
+    "tags": [
+      "jwt",
+      "authentication",
+      "security",
+      "middleware"
+    ],
+    "summary": "Complete JWT auth flow for Express APIs — token generation, verification middleware, and refresh tokens.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "express",
+      "node.js",
+      "typescript",
+      "jsonwebtoken"
+    ]
+  },
+  {
+    "title": "CORS Configuration",
+    "slug": "cors-configuration",
+    "category": "express",
+    "type": "reference",
+    "tags": [
+      "cors",
+      "security",
+      "headers",
+      "api"
+    ],
+    "summary": "Proper CORS setup for Express APIs — origins, credentials, preflight, and production configuration.",
+    "difficulty": "beginner",
+    "technologies": [
+      "express",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Express Error Handling",
+    "slug": "error-handling",
+    "category": "express",
+    "type": "pattern",
+    "tags": [
+      "error-handling",
+      "middleware",
+      "production"
+    ],
+    "summary": "Comprehensive error handling strategy for Express APIs with custom error classes.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "express",
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Express Middleware Patterns",
+    "slug": "middleware-patterns",
+    "category": "express",
+    "type": "pattern",
+    "tags": [
+      "middleware",
+      "error-handling",
+      "async"
+    ],
+    "summary": "Essential middleware patterns for Express.js including async error handling and composition.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "express",
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Express Project Structure",
+    "slug": "project-structure",
+    "category": "express",
+    "type": "note",
+    "tags": [
+      "structure",
+      "organization",
+      "best-practices"
+    ],
+    "summary": "Clean and scalable folder structure for Express.js APIs with TypeScript.",
+    "difficulty": "beginner",
+    "technologies": [
+      "express",
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Rate Limiting in Express",
+    "slug": "rate-limiting",
+    "category": "express",
+    "type": "pattern",
+    "tags": [
+      "rate-limiting",
+      "security",
+      "middleware",
+      "redis"
+    ],
+    "summary": "Implementing rate limiting for Express APIs — in-memory for dev, Redis for production.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "express",
+      "node.js",
+      "redis"
+    ]
+  },
+  {
+    "title": "Request Validation Middleware",
+    "slug": "validation-middleware",
+    "category": "express",
+    "type": "pattern",
+    "tags": [
+      "validation",
+      "middleware",
+      "zod",
+      "express"
+    ],
+    "summary": "Building reusable request validation middleware with Zod for body, params, and query validation.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "express",
+      "zod",
+      "typescript"
+    ]
+  },
+  {
+    "title": "MongoDB Aggregation Pipeline",
+    "slug": "aggregation-pipeline",
+    "category": "mongodb",
+    "type": "reference",
+    "tags": [
+      "aggregation",
+      "pipeline",
+      "queries"
+    ],
+    "summary": "Complete reference for MongoDB aggregation pipeline stages with practical examples.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "mongodb",
+      "node.js"
+    ]
+  },
+  {
+    "title": "MongoDB Connection Patterns for Node.js",
+    "slug": "connection-patterns",
+    "category": "mongodb",
+    "type": "pattern",
+    "tags": [
+      "connection",
+      "node.js",
+      "singleton"
+    ],
+    "summary": "Best practices for managing MongoDB connections in Node.js applications.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "mongodb",
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "MongoDB Indexing Strategy",
+    "slug": "indexes-strategy",
+    "category": "mongodb",
+    "type": "pattern",
+    "tags": [
+      "indexes",
+      "performance",
+      "optimization"
+    ],
+    "summary": "How to design and use MongoDB indexes effectively for query performance.",
+    "difficulty": "advanced",
+    "technologies": [
+      "mongodb"
+    ]
+  },
+  {
+    "title": "Mongoose vs Native MongoDB Driver",
+    "slug": "mongoose-vs-native",
+    "category": "mongodb",
+    "type": "note",
+    "tags": [
+      "mongoose",
+      "driver",
+      "comparison",
+      "decision"
+    ],
+    "summary": "When to use Mongoose ODM vs the native MongoDB driver — trade-offs and decision guide.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "mongodb",
+      "mongoose",
+      "node.js"
+    ]
+  },
+  {
+    "title": "MongoDB Pagination Patterns",
+    "slug": "pagination-patterns",
+    "category": "mongodb",
+    "type": "pattern",
+    "tags": [
+      "pagination",
+      "cursor",
+      "skip-limit",
+      "performance"
+    ],
+    "summary": "Offset vs cursor-based pagination in MongoDB — when to use each and implementation patterns.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "mongodb",
+      "node.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "MongoDB Schema Design Patterns",
+    "slug": "schema-design-patterns",
+    "category": "mongodb",
+    "type": "pattern",
+    "tags": [
+      "schema",
+      "data-modeling",
+      "embedding",
+      "referencing"
+    ],
+    "summary": "When to embed vs reference, and common schema patterns for MongoDB document design.",
+    "difficulty": "advanced",
+    "technologies": [
+      "mongodb"
+    ]
+  },
+  {
+    "title": "MongoDB Text Search",
+    "slug": "text-search",
+    "category": "mongodb",
+    "type": "reference",
+    "tags": [
+      "search",
+      "text-index",
+      "full-text",
+      "mongodb"
+    ],
+    "summary": "Full-text search in MongoDB using text indexes — setup, querying, scoring, and limitations.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "mongodb"
+    ]
+  },
+  {
+    "title": "App Router Data Fetching Patterns",
+    "slug": "app-router-data-fetching",
+    "category": "nextjs",
+    "type": "pattern",
+    "tags": [
+      "server-components",
+      "async",
+      "fetch",
+      "cache"
+    ],
+    "summary": "Complete guide to data fetching in Next.js App Router using async Server Components and fetch caching.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Dynamic Routes with generateStaticParams",
+    "slug": "dynamic-routes-generatestaticparams",
+    "category": "nextjs",
+    "type": "reference",
+    "tags": [
+      "routing",
+      "static-generation",
+      "dynamic-routes"
+    ],
+    "summary": "How to create dynamic routes and pre-render them at build time using generateStaticParams.",
+    "difficulty": "beginner",
+    "technologies": [
+      "next.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Environment Variables in Next.js",
+    "slug": "environment-variables",
+    "category": "nextjs",
+    "type": "reference",
+    "tags": [
+      "env",
+      "config",
+      "security",
+      "deployment"
+    ],
+    "summary": "Managing environment variables in Next.js — public vs private, runtime vs build-time, and validation.",
+    "difficulty": "beginner",
+    "technologies": [
+      "next.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Next.js Image Optimization",
+    "slug": "image-optimization",
+    "category": "nextjs",
+    "type": "reference",
+    "tags": [
+      "images",
+      "optimization",
+      "performance",
+      "next-image"
+    ],
+    "summary": "Using next/image for automatic optimization, responsive images, and priority loading.",
+    "difficulty": "beginner",
+    "technologies": [
+      "next.js"
+    ]
+  },
+  {
+    "title": "Loading UI & Streaming",
+    "slug": "loading-and-streaming",
+    "category": "nextjs",
+    "type": "pattern",
+    "tags": [
+      "suspense",
+      "streaming",
+      "loading",
+      "ux"
+    ],
+    "summary": "How to use loading.tsx, Suspense boundaries, and streaming for instant perceived performance.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "react"
+    ]
+  },
+  {
+    "title": "Metadata & SEO in App Router",
+    "slug": "metadata-and-seo",
+    "category": "nextjs",
+    "type": "reference",
+    "tags": [
+      "metadata",
+      "seo",
+      "open-graph"
+    ],
+    "summary": "How to configure static and dynamic metadata for SEO in Next.js App Router pages.",
+    "difficulty": "beginner",
+    "technologies": [
+      "next.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Next.js Middleware Patterns",
+    "slug": "middleware-patterns",
+    "category": "nextjs",
+    "type": "pattern",
+    "tags": [
+      "middleware",
+      "routing",
+      "auth",
+      "redirects"
+    ],
+    "summary": "How to use Next.js middleware for auth protection, redirects, geolocation, and request rewriting.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Parallel & Intercepting Routes",
+    "slug": "parallel-routes",
+    "category": "nextjs",
+    "type": "pattern",
+    "tags": [
+      "routing",
+      "parallel-routes",
+      "intercepting-routes",
+      "modals"
+    ],
+    "summary": "Advanced routing patterns in Next.js — parallel routes for split layouts and intercepting routes for modals.",
+    "difficulty": "advanced",
+    "technologies": [
+      "next.js",
+      "react"
+    ]
+  },
+  {
+    "title": "Route Handlers (API Routes)",
+    "slug": "route-handlers",
+    "category": "nextjs",
+    "type": "reference",
+    "tags": [
+      "api",
+      "route-handlers",
+      "http-methods"
+    ],
+    "summary": "How to create API endpoints in Next.js App Router using Route Handlers with proper typing.",
+    "difficulty": "beginner",
+    "technologies": [
+      "next.js",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Server Actions Pattern",
+    "slug": "server-actions-pattern",
+    "category": "nextjs",
+    "type": "pattern",
+    "tags": [
+      "server-actions",
+      "forms",
+      "mutations"
+    ],
+    "summary": "How to use Server Actions for form handling and data mutations in Next.js App Router.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "next.js",
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Array Utility Functions",
+    "slug": "array-utilities",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "arrays",
+      "utilities",
+      "typescript",
+      "functional"
+    ],
+    "summary": "Type-safe array utilities — unique, groupBy, chunk, sortBy, and partition.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Async Error Handling Patterns",
+    "slug": "async-error-handling",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "async",
+      "error-handling",
+      "typescript",
+      "patterns"
+    ],
+    "summary": "Clean patterns for handling errors in async/await code without try-catch hell.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript",
+      "node.js"
+    ]
+  },
+  {
+    "title": "cn() Class Name Utility",
+    "slug": "cn-utility",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "tailwind",
+      "classnames",
+      "utility",
+      "styling"
+    ],
+    "summary": "The cn() utility combining clsx and tailwind-merge for conflict-free className composition.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript",
+      "tailwindcss"
+    ]
+  },
+  {
+    "title": "Date Formatting Utilities",
+    "slug": "date-formatting",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "dates",
+      "formatting",
+      "intl",
+      "utilities"
+    ],
+    "summary": "Clean date formatting using Intl.DateTimeFormat — no external libraries needed.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Debounce & Throttle Implementations",
+    "slug": "debounce-throttle",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "performance",
+      "debounce",
+      "throttle",
+      "hooks"
+    ],
+    "summary": "Type-safe debounce and throttle utilities plus React hooks for search inputs and scroll handlers.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript",
+      "react"
+    ]
+  },
+  {
+    "title": "Environment Variable Validation with Zod",
+    "slug": "env-validation",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "env",
+      "validation",
+      "zod",
+      "config"
+    ],
+    "summary": "Type-safe environment variable validation that fails fast at startup using Zod.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript",
+      "zod",
+      "node.js"
+    ]
+  },
+  {
+    "title": "Result Pattern (No Throw)",
+    "slug": "error-result-pattern",
+    "category": "snippets",
+    "type": "pattern",
+    "tags": [
+      "error-handling",
+      "result-pattern",
+      "typescript",
+      "functional"
+    ],
+    "summary": "Type-safe error handling without exceptions — the Result/Either pattern in TypeScript.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Type-Safe Fetch Wrapper",
+    "slug": "fetch-wrapper",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "fetch",
+      "api",
+      "typescript",
+      "http"
+    ],
+    "summary": "A minimal, type-safe fetch wrapper with error handling, timeouts, and response parsing.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "useLocalStorage React Hook",
+    "slug": "local-storage-hook",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "react",
+      "hooks",
+      "localstorage",
+      "persistence"
+    ],
+    "summary": "Type-safe useLocalStorage hook with SSR safety, JSON serialization, and error handling.",
+    "difficulty": "beginner",
+    "technologies": [
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Responsive Hooks",
+    "slug": "responsive-hooks",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "responsive",
+      "hooks",
+      "media-query",
+      "react"
+    ],
+    "summary": "useMediaQuery and useBreakpoint hooks for responsive behavior in React components.",
+    "difficulty": "beginner",
+    "technologies": [
+      "react",
+      "typescript"
+    ]
+  },
+  {
+    "title": "Singleton Pattern for Global Instances",
+    "slug": "singleton-pattern",
+    "category": "snippets",
+    "type": "pattern",
+    "tags": [
+      "singleton",
+      "patterns",
+      "global",
+      "database"
+    ],
+    "summary": "Safe singleton pattern for database clients and service instances in serverless/Next.js environments.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript",
+      "node.js",
+      "next.js"
+    ]
+  },
+  {
+    "title": "TypeScript Utility Types Cheatsheet",
+    "slug": "typescript-utility-types",
+    "category": "snippets",
+    "type": "snippet",
+    "tags": [
+      "typescript",
+      "generics",
+      "utility-types"
+    ],
+    "summary": "Quick reference for the most useful TypeScript utility types with practical examples.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Discriminated Unions for State Machines",
+    "slug": "discriminated-unions",
+    "category": "typescript",
+    "type": "pattern",
+    "tags": [
+      "typescript",
+      "unions",
+      "state-machine",
+      "type-safety"
+    ],
+    "summary": "Using discriminated unions to model application state safely — async states, events, and reducers.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript",
+      "react"
+    ]
+  },
+  {
+    "title": "TypeScript Generics Patterns",
+    "slug": "generics-patterns",
+    "category": "typescript",
+    "type": "pattern",
+    "tags": [
+      "generics",
+      "typescript",
+      "type-safety"
+    ],
+    "summary": "Practical generic patterns for type-safe APIs, factories, and utility functions.",
+    "difficulty": "advanced",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Template Literal Types",
+    "slug": "template-literal-types",
+    "category": "typescript",
+    "type": "pattern",
+    "tags": [
+      "template-literals",
+      "typescript",
+      "type-system",
+      "advanced-types"
+    ],
+    "summary": "Using template literal types for type-safe string manipulation — event names, CSS units, routes.",
+    "difficulty": "advanced",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "tsconfig.json Configuration Guide",
+    "slug": "tsconfig-guide",
+    "category": "typescript",
+    "type": "reference",
+    "tags": [
+      "config",
+      "tsconfig",
+      "compiler-options"
+    ],
+    "summary": "Essential tsconfig.json options explained — what to enable and why for modern TypeScript projects.",
+    "difficulty": "beginner",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Type Guards & Narrowing",
+    "slug": "type-guards",
+    "category": "typescript",
+    "type": "pattern",
+    "tags": [
+      "type-guards",
+      "narrowing",
+      "typescript",
+      "type-safety"
+    ],
+    "summary": "Custom type guards, typeof, instanceof, and in operator for runtime type narrowing.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript"
+    ]
+  },
+  {
+    "title": "Zod Schema Validation Patterns",
+    "slug": "zod-schema-patterns",
+    "category": "typescript",
+    "type": "pattern",
+    "tags": [
+      "zod",
+      "validation",
+      "schema",
+      "type-safety"
+    ],
+    "summary": "Type-safe runtime validation with Zod — schemas, transforms, and API integration patterns.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "typescript",
+      "zod"
+    ]
+  }
+]

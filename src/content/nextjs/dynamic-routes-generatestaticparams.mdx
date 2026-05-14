@@ -1,0 +1,79 @@
+---
+title: "Dynamic Routes with generateStaticParams"
+slug: "dynamic-routes-generatestaticparams"
+category: "nextjs"
+type: "reference"
+difficulty: "beginner"
+tags: ["routing", "static-generation", "dynamic-routes"]
+summary: "How to create dynamic routes and pre-render them at build time using generateStaticParams."
+createdAt: "2025-01-20"
+updatedAt: "2025-04-15"
+pinned: false
+technologies: ["next.js", "typescript"]
+---
+
+## Basic Dynamic Route
+
+Create a file with bracket notation: `app/blog/[slug]/page.tsx`
+
+```typescript
+// app/blog/[slug]/page.tsx
+type Props = {
+  params: Promise<{ slug: string }>
+}
+
+export default async function BlogPost({ params }: Props) {
+  const { slug } = await params
+  const post = await getPost(slug)
+
+  return <article>{post.title}</article>
+}
+```
+
+## generateStaticParams
+
+Pre-render all known paths at build time:
+
+```typescript
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+```
+
+## Multiple Dynamic Segments
+
+```typescript
+// app/knowledge/[category]/[slug]/page.tsx
+type Props = {
+  params: Promise<{ category: string; slug: string }>
+}
+
+export async function generateStaticParams() {
+  const entries = await getAllEntries()
+
+  return entries.map((entry) => ({
+    category: entry.category,
+    slug: entry.slug,
+  }))
+}
+```
+
+## Catch-All Routes
+
+```typescript
+// app/docs/[...slug]/page.tsx
+// Matches /docs/a, /docs/a/b, /docs/a/b/c, etc.
+
+type Props = {
+  params: Promise<{ slug: string[] }>
+}
+
+export default async function DocsPage({ params }: Props) {
+  const { slug } = await params
+  // slug = ['a', 'b', 'c'] for /docs/a/b/c
+}
+```

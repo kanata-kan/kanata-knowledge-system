@@ -1,0 +1,101 @@
+---
+title: "API Error Response Standard"
+slug: "api-error-response-standard"
+category: "architecture"
+type: "reference"
+difficulty: "beginner"
+tags: ["api", "error-handling", "standards", "rest"]
+summary: "Consistent error response format for REST APIs — structure, status codes, and examples."
+createdAt: "2025-03-15"
+updatedAt: "2025-04-30"
+pinned: false
+technologies: ["node.js", "express", "typescript"]
+---
+
+## Standard Error Response Shape
+
+```typescript
+type ApiError = {
+  status: 'error'
+  code: number
+  message: string
+  details?: Record<string, string[]> // field-level validation errors
+}
+```
+
+## Success Response Shape
+
+```typescript
+type ApiSuccess<T> = {
+  status: 'success'
+  data: T
+}
+```
+
+## HTTP Status Code Guide
+
+| Code | Meaning | When to Use |
+|------|---------|-------------|
+| 200 | OK | Successful GET, PUT, PATCH |
+| 201 | Created | Successful POST that creates resource |
+| 204 | No Content | Successful DELETE |
+| 400 | Bad Request | Validation error, malformed input |
+| 401 | Unauthorized | Missing or invalid auth token |
+| 403 | Forbidden | Valid auth but insufficient permissions |
+| 404 | Not Found | Resource doesn't exist |
+| 409 | Conflict | Duplicate resource (e.g., email already exists) |
+| 422 | Unprocessable | Valid format but semantic errors |
+| 429 | Too Many Requests | Rate limited |
+| 500 | Internal Error | Unexpected server failure |
+
+## Example Responses
+
+### Validation Error (400)
+
+```json
+{
+  "status": "error",
+  "code": 400,
+  "message": "Validation failed",
+  "details": {
+    "email": ["Invalid email format"],
+    "password": ["Must be at least 8 characters"]
+  }
+}
+```
+
+### Not Found (404)
+
+```json
+{
+  "status": "error",
+  "code": 404,
+  "message": "User with id '123' not found"
+}
+```
+
+### Success (200)
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": "123",
+    "name": "John",
+    "email": "john@example.com"
+  }
+}
+```
+
+## Implementation
+
+```typescript
+// utils/response.ts
+export function successResponse<T>(data: T) {
+  return { status: 'success' as const, data }
+}
+
+export function errorResponse(code: number, message: string, details?: Record<string, string[]>) {
+  return { status: 'error' as const, code, message, ...(details && { details }) }
+}
+```

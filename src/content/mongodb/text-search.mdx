@@ -1,0 +1,75 @@
+---
+title: "MongoDB Text Search"
+slug: "text-search"
+category: "mongodb"
+type: "reference"
+difficulty: "intermediate"
+tags: ["search", "text-index", "full-text", "mongodb"]
+summary: "Full-text search in MongoDB using text indexes — setup, querying, scoring, and limitations."
+createdAt: "2025-03-30"
+updatedAt: "2025-05-07"
+pinned: false
+technologies: ["mongodb"]
+---
+
+## Create Text Index
+
+```javascript
+// Single field
+db.articles.createIndex({ content: "text" })
+
+// Multiple fields with weights
+db.articles.createIndex(
+  { title: "text", content: "text", tags: "text" },
+  { weights: { title: 10, tags: 5, content: 1 } }
+)
+```
+
+## Basic Text Search
+
+```javascript
+// Search for entries containing "aggregation" or "pipeline"
+db.articles.find({ $text: { $search: "aggregation pipeline" } })
+
+// Exact phrase
+db.articles.find({ $text: { $search: '"exact phrase"' } })
+
+// Exclude term
+db.articles.find({ $text: { $search: "mongodb -mongoose" } })
+```
+
+## Sorting by Relevance
+
+```javascript
+db.articles.find(
+  { $text: { $search: "react server components" } },
+  { score: { $meta: "textScore" } }
+).sort({ score: { $meta: "textScore" } })
+```
+
+## With Node.js Driver
+
+```typescript
+const results = await db.collection('entries').find(
+  { $text: { $search: query } },
+  { projection: { score: { $meta: 'textScore' } } }
+)
+.sort({ score: { $meta: 'textScore' } })
+.limit(20)
+.toArray()
+```
+
+## Limitations
+
+- One text index per collection
+- No partial word matching (use regex or Atlas Search)
+- Language-dependent stemming
+- Cannot combine with other special indexes on same field
+
+## When to Use Atlas Search Instead
+
+- Need fuzzy matching
+- Need autocomplete
+- Need faceted search
+- Need highlighting
+- Production full-text search at scale

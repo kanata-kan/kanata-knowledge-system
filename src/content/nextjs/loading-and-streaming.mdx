@@ -1,0 +1,90 @@
+---
+title: "Loading UI & Streaming"
+slug: "loading-and-streaming"
+category: "nextjs"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["suspense", "streaming", "loading", "ux"]
+summary: "How to use loading.tsx, Suspense boundaries, and streaming for instant perceived performance."
+createdAt: "2025-04-10"
+updatedAt: "2025-05-12"
+pinned: false
+technologies: ["next.js", "react"]
+---
+
+## loading.tsx Convention
+
+Create a `loading.tsx` file in any route segment for instant loading states:
+
+```typescript
+// app/knowledge/[category]/loading.tsx
+export default function Loading() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-8 w-64 bg-muted/20 rounded" />
+      <div className="h-4 w-96 bg-muted/20 rounded" />
+      <div className="space-y-3 mt-8">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="h-24 bg-muted/10 rounded-lg" />
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+## Granular Suspense Boundaries
+
+For more control, use Suspense directly:
+
+```typescript
+import { Suspense } from 'react'
+
+export default function Dashboard() {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      <Suspense fallback={<CardSkeleton />}>
+        <RevenueCard />
+      </Suspense>
+      <Suspense fallback={<CardSkeleton />}>
+        <UsersCard />
+      </Suspense>
+      <Suspense fallback={<CardSkeleton />}>
+        <ActivityCard />
+      </Suspense>
+    </div>
+  )
+}
+```
+
+## Sequential vs Parallel Streaming
+
+```typescript
+// Sequential (waterfall) - BAD
+export default async function Page() {
+  const user = await getUser()       // waits...
+  const posts = await getPosts()     // then waits...
+  return <View user={user} posts={posts} />
+}
+
+// Parallel streaming - GOOD
+export default function Page() {
+  return (
+    <>
+      <Suspense fallback={<UserSkeleton />}>
+        <UserSection />
+      </Suspense>
+      <Suspense fallback={<PostsSkeleton />}>
+        <PostsSection />
+      </Suspense>
+    </>
+  )
+}
+```
+
+## Key Rules
+
+- `loading.tsx` wraps the page in a Suspense boundary automatically
+- Each Suspense boundary streams HTML as data resolves
+- Place boundaries at meaningful UX divisions
+- Nested layouts enable progressive loading from shell to content

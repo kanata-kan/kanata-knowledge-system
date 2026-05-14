@@ -1,0 +1,72 @@
+---
+title: "Metadata & SEO in App Router"
+slug: "metadata-and-seo"
+category: "nextjs"
+type: "reference"
+difficulty: "beginner"
+tags: ["metadata", "seo", "open-graph"]
+summary: "How to configure static and dynamic metadata for SEO in Next.js App Router pages."
+createdAt: "2025-03-01"
+updatedAt: "2025-05-01"
+pinned: false
+technologies: ["next.js", "typescript"]
+---
+
+## Static Metadata
+
+Export a `metadata` object from a layout or page:
+
+```typescript
+// app/layout.tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: {
+    default: 'My App',
+    template: '%s | My App',
+  },
+  description: 'My application description',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://myapp.com',
+    siteName: 'My App',
+  },
+}
+```
+
+## Dynamic Metadata
+
+Use `generateMetadata` for dynamic pages:
+
+```typescript
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next'
+
+type Props = {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPost(slug)
+
+  return {
+    title: post.title,
+    description: post.summary,
+    openGraph: {
+      title: post.title,
+      description: post.summary,
+      type: 'article',
+      publishedTime: post.createdAt,
+    },
+  }
+}
+```
+
+## Key Rules
+
+- `metadata` is only supported in Server Components (layout.tsx or page.tsx)
+- Child metadata merges with and overrides parent metadata
+- Use `title.template` in layouts for consistent title patterns
+- Always set `description` for SEO

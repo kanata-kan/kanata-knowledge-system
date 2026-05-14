@@ -1,0 +1,77 @@
+---
+title: "CORS Configuration"
+slug: "cors-configuration"
+category: "express"
+type: "reference"
+difficulty: "beginner"
+tags: ["cors", "security", "headers", "api"]
+summary: "Proper CORS setup for Express APIs — origins, credentials, preflight, and production configuration."
+createdAt: "2025-03-22"
+updatedAt: "2025-05-06"
+pinned: false
+technologies: ["express", "node.js"]
+---
+
+## Basic Setup
+
+```typescript
+import cors from 'cors'
+
+// Allow all origins (dev only!)
+app.use(cors())
+```
+
+## Production Config
+
+```typescript
+const allowedOrigins = [
+  'https://myapp.com',
+  'https://www.myapp.com',
+  'https://staging.myapp.com',
+]
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile, curl)
+    if (!origin) return callback(null, true)
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400, // preflight cache 24h
+}))
+```
+
+## Manual CORS (No Library)
+
+```typescript
+app.use((req, res, next) => {
+  const origin = req.headers.origin
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader('Access-Control-Max-Age', '86400')
+
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204)
+  }
+  next()
+})
+```
+
+## Common Mistakes
+
+- Using `*` origin with `credentials: true` (browsers block this)
+- Forgetting preflight (OPTIONS) handling
+- Not including `Authorization` in allowed headers
+- Different CORS config per environment without env vars

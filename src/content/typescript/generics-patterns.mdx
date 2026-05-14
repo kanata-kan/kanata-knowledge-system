@@ -1,0 +1,80 @@
+---
+title: "TypeScript Generics Patterns"
+slug: "generics-patterns"
+category: "typescript"
+type: "pattern"
+difficulty: "advanced"
+tags: ["generics", "typescript", "type-safety"]
+summary: "Practical generic patterns for type-safe APIs, factories, and utility functions."
+createdAt: "2025-02-05"
+updatedAt: "2025-05-10"
+pinned: true
+technologies: ["typescript"]
+---
+
+## Generic Function
+
+```typescript
+function identity<T>(value: T): T {
+  return value;
+}
+
+const num = identity(42); // number
+const str = identity("hello"); // string
+```
+
+## Generic Constraints
+
+```typescript
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user = { name: "Alice", age: 30 };
+const name = getProperty(user, "name"); // string
+```
+
+## Generic Factory
+
+```typescript
+function createRepository<T extends { id: string }>() {
+  const items: T[] = [];
+
+  return {
+    add(item: T) {
+      items.push(item);
+    },
+    findById(id: string) {
+      return items.find((i) => i.id === id);
+    },
+    getAll() {
+      return [...items];
+    },
+  };
+}
+
+type User = { id: string; name: string };
+const userRepo = createRepository<User>();
+```
+
+## Conditional Types
+
+```typescript
+type IsArray<T> = T extends unknown[] ? true : false;
+
+type A = IsArray<string[]>; // true
+type B = IsArray<number>; // false
+
+// Infer element type
+type ElementOf<T> = T extends (infer E)[] ? E : never;
+type C = ElementOf<string[]>; // string
+```
+
+## Mapped Types with Generics
+
+```typescript
+type Nullable<T> = { [K in keyof T]: T[K] | null };
+type Readonly<T> = { readonly [K in keyof T]: T[K] };
+
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+```

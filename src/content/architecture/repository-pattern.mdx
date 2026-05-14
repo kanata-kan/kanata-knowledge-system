@@ -1,0 +1,96 @@
+---
+title: "Repository Pattern"
+slug: "repository-pattern"
+category: "architecture"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["repository", "data-access", "abstraction", "testing"]
+summary: "Clean data access layer using the Repository pattern — abstraction for database operations."
+createdAt: "2025-04-16"
+updatedAt: "2025-05-11"
+pinned: false
+technologies: ["typescript", "mongodb", "node.js"]
+---
+
+## Interface Definition
+
+```typescript
+interface Repository<T> {
+  findById(id: string): Promise<T | null>
+  findMany(filter?: Partial<T>): Promise<T[]>
+  create(data: Omit<T, 'id'>): Promise<T>
+  update(id: string, data: Partial<T>): Promise<T | null>
+  delete(id: string): Promise<boolean>
+}
+```
+
+## MongoDB Implementation
+
+```typescript
+import { Collection, ObjectId } from 'mongodb'
+
+class MongoRepository<T extends { id: string }> implements Repository<T> {
+  constructor(private collection: Collection) {}
+
+  async findById(id: string): Promise<T | null> {
+    const doc = await this.collection.findOne({ _id: new ObjectId(id) })
+    return doc ? this.toEntity(doc) : null
+  }
+
+  async findMany(filter: Partial<T> = {}): Promise<T[]> {
+    const docs = await this.collection.find(filter).toArray()
+    return docs.map(this.toEntity)
+  }
+
+  async create(data: Omit<T, 'id'>): Promise<T> {
+    const result = await this.collection.insertOne(data as any)
+    return this.toEntity({ _id: result.insertedId, ...data })
+  }
+
+  async update(id: string, data: Partial<T>): Promise<T | null> {
+    const result = await this.collection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: data },
+      { returnDocument: 'after' }
+    )
+    return result ? this.toEntity(result) : null
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const result = await this.collection.deleteOne({ _id: new ObjectId(id) })
+    return result.deletedCount === 1
+  }
+
+  private toEntity(doc: any): T {
+    const { _id, ...rest } = doc
+    return { id: _id.toString(), ...rest } as T
+  }
+}
+```
+
+## Specialized Repository
+
+```typescript
+interface UserRepository extends Repository<User> {
+  findByEmail(email: string): Promise<User | null>
+  findActive(): Promise<User[]>
+}
+
+class MongoUserRepository extends MongoRepository<User> implements UserRepository {
+  async findByEmail(email: string) {
+    const doc = await this.collection.findOne({ email })
+    return doc ? this.toEntity(doc) : null
+  }
+
+  async findActive() {
+    return this.findMany({ isActive: true } as any)
+  }
+}
+```
+
+## Benefits
+
+- Swap databases without changing business logic
+- Easy to mock in tests
+- Centralizes query logic
+- Enforces consistent data access patterns

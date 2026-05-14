@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/generate-search-index.mjs && next dev",
+    "prebuild": "node scripts/generate-search-index.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-index": "node scripts/generate-search-index.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

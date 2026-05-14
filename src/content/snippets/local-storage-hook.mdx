@@ -1,0 +1,106 @@
+---
+title: "useLocalStorage React Hook"
+slug: "local-storage-hook"
+category: "snippets"
+type: "snippet"
+difficulty: "beginner"
+tags: ["react", "hooks", "localstorage", "persistence"]
+summary: "Type-safe useLocalStorage hook with SSR safety, JSON serialization, and error handling."
+createdAt: "2025-04-22"
+updatedAt: "2025-05-12"
+pinned: false
+technologies: ["react", "typescript"]
+---
+
+## The Hook
+
+```typescript
+import { useState, useEffect, useCallback } from 'react'
+
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T | ((prev: T) => T)) => void, () => void] {
+  const [storedValue, setStoredValue] = useState<T>(initialValue)
+
+  // Load from localStorage on mount (SSR safe)
+  useEffect(() => {
+    try {
+      const item = window.localStorage.getItem(key)
+      if (item) {
+        setStoredValue(JSON.parse(item))
+      }
+    } catch (error) {
+      console.warn(`Error reading localStorage key "${key}":`, error)
+    }
+  }, [key])
+
+  const setValue = useCallback(
+    (value: T | ((prev: T) => T)) => {
+      setStoredValue((prev) => {
+        const nextValue = value instanceof Function ? value(prev) : value
+        try {
+          window.localStorage.setItem(key, JSON.stringify(nextValue))
+        } catch (error) {
+          console.warn(`Error setting localStorage key "${key}":`, error)
+        }
+        return nextValue
+      })
+    },
+    [key]
+  )
+
+  const removeValue = useCallback(() => {
+    setStoredValue(initialValue)
+    try {
+      window.localStorage.removeItem(key)
+    } catch (error) {
+      console.warn(`Error removing localStorage key "${key}":`, error)
+    }
+  }, [key, initialValue])
+
+  return [storedValue, setValue, removeValue]
+}
+```
+
+## Usage
+
+```typescript
+function Settings() {
+  const [theme, setTheme] = useLocalStorage('theme', 'dark')
+  const [fontSize, setFontSize] = useLocalStorage('fontSize', 14)
+
+  return (
+    <div>
+      <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+      <input
+        type="number"
+        value={fontSize}
+        onChange={(e) => setFontSize(Number(e.target.value))}
+      />
+    </div>
+  )
+}
+```
+
+## With Complex Objects
+
+```typescript
+type Preferences = {
+  sidebar: boolean
+  density: 'compact' | 'normal'
+  pinnedCategories: string[]
+}
+
+const [prefs, setPrefs] = useLocalStorage<Preferences>('prefs', {
+  sidebar: true,
+  density: 'normal',
+  pinnedCategories: [],
+})
+
+// Update single field
+setPrefs((prev) => ({ ...prev, sidebar: false }))
+```

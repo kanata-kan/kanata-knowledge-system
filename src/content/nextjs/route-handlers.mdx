@@ -1,0 +1,99 @@
+---
+title: "Route Handlers (API Routes)"
+slug: "route-handlers"
+category: "nextjs"
+type: "reference"
+difficulty: "beginner"
+tags: ["api", "route-handlers", "http-methods"]
+summary: "How to create API endpoints in Next.js App Router using Route Handlers with proper typing."
+createdAt: "2025-03-20"
+updatedAt: "2025-05-06"
+pinned: false
+technologies: ["next.js", "typescript"]
+---
+
+## Basic Route Handler
+
+Create a `route.ts` file inside the app directory:
+
+```typescript
+// app/api/users/route.ts
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+  const users = await db.user.findMany()
+  return NextResponse.json(users)
+}
+
+export async function POST(request: Request) {
+  const body = await request.json()
+  const user = await db.user.create({ data: body })
+  return NextResponse.json(user, { status: 201 })
+}
+```
+
+## Dynamic Route Handler
+
+```typescript
+// app/api/users/[id]/route.ts
+import { NextResponse } from 'next/server'
+
+type Props = {
+  params: Promise<{ id: string }>
+}
+
+export async function GET(request: Request, { params }: Props) {
+  const { id } = await params
+  const user = await db.user.findUnique({ where: { id } })
+
+  if (!user) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
+  return NextResponse.json(user)
+}
+
+export async function DELETE(request: Request, { params }: Props) {
+  const { id } = await params
+  await db.user.delete({ where: { id } })
+  return new NextResponse(null, { status: 204 })
+}
+```
+
+## Request Helpers
+
+```typescript
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const page = searchParams.get('page') || '1'
+  const limit = searchParams.get('limit') || '10'
+
+  // Headers
+  const authHeader = request.headers.get('authorization')
+
+  // Cookies
+  const token = request.cookies?.get('token')?.value
+}
+```
+
+## Response Options
+
+```typescript
+// JSON response
+NextResponse.json(data, { status: 200 })
+
+// Redirect
+NextResponse.redirect(new URL('/login', request.url))
+
+// Custom headers
+return new NextResponse(JSON.stringify(data), {
+  headers: {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'max-age=60',
+  },
+})
+```
+
+## Supported HTTP Methods
+
+`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`

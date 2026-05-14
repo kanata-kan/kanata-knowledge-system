@@ -1,0 +1,87 @@
+---
+title: "Date Formatting Utilities"
+slug: "date-formatting"
+category: "snippets"
+type: "snippet"
+difficulty: "beginner"
+tags: ["dates", "formatting", "intl", "utilities"]
+summary: "Clean date formatting using Intl.DateTimeFormat — no external libraries needed."
+createdAt: "2025-04-15"
+updatedAt: "2025-05-10"
+pinned: false
+technologies: ["typescript"]
+---
+
+## Relative Time
+
+```typescript
+function timeAgo(date: Date): string {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000)
+
+  const intervals = [
+    { label: 'y', seconds: 31536000 },
+    { label: 'mo', seconds: 2592000 },
+    { label: 'd', seconds: 86400 },
+    { label: 'h', seconds: 3600 },
+    { label: 'm', seconds: 60 },
+  ]
+
+  for (const { label, seconds: s } of intervals) {
+    const count = Math.floor(seconds / s)
+    if (count >= 1) return `${count}${label} ago`
+  }
+
+  return 'just now'
+}
+```
+
+## Formatted Date
+
+```typescript
+function formatDate(date: Date | string, style: 'short' | 'long' = 'short'): string {
+  const d = typeof date === 'string' ? new Date(date) : date
+
+  if (style === 'short') {
+    return d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+    // "May 14, 2025"
+  }
+
+  return d.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+  // "Wednesday, May 14, 2025"
+}
+```
+
+## ISO to Display
+
+```typescript
+function isoToDisplay(iso: string): string {
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(iso))
+  // "May 14, 2025, 2:30 PM"
+}
+```
+
+## Duration
+
+```typescript
+function formatDuration(ms: number): string {
+  const seconds = Math.floor(ms / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+
+  if (hours > 0) return `${hours}h ${minutes % 60}m`
+  if (minutes > 0) return `${minutes}m ${seconds % 60}s`
+  return `${seconds}s`
+}
+```

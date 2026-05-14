@@ -1,0 +1,79 @@
+---
+title: "Responsive Hooks"
+slug: "responsive-hooks"
+category: "snippets"
+type: "snippet"
+difficulty: "beginner"
+tags: ["responsive", "hooks", "media-query", "react"]
+summary: "useMediaQuery and useBreakpoint hooks for responsive behavior in React components."
+createdAt: "2025-04-18"
+updatedAt: "2025-05-08"
+pinned: false
+technologies: ["react", "typescript"]
+---
+
+## useMediaQuery
+
+```typescript
+import { useSyncExternalStore } from 'react'
+
+export function useMediaQuery(query: string): boolean {
+  return useSyncExternalStore(
+    (callback) => {
+      const mql = window.matchMedia(query)
+      mql.addEventListener('change', callback)
+      return () => mql.removeEventListener('change', callback)
+    },
+    () => window.matchMedia(query).matches,
+    () => false // SSR fallback
+  )
+}
+
+// Usage
+const isMobile = useMediaQuery('(max-width: 768px)')
+const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')
+```
+
+## useBreakpoint
+
+```typescript
+const breakpoints = {
+  sm: '(min-width: 640px)',
+  md: '(min-width: 768px)',
+  lg: '(min-width: 1024px)',
+  xl: '(min-width: 1280px)',
+} as const
+
+type Breakpoint = keyof typeof breakpoints
+
+export function useBreakpoint(bp: Breakpoint): boolean {
+  return useMediaQuery(breakpoints[bp])
+}
+
+// Usage
+function Sidebar() {
+  const isDesktop = useBreakpoint('md')
+
+  if (!isDesktop) return null
+  return <DesktopSidebar />
+}
+```
+
+## useWindowSize
+
+```typescript
+export function useWindowSize() {
+  return useSyncExternalStore(
+    (callback) => {
+      window.addEventListener('resize', callback)
+      return () => window.removeEventListener('resize', callback)
+    },
+    () => ({ width: window.innerWidth, height: window.innerHeight }),
+    () => ({ width: 0, height: 0 })
+  )
+}
+```
+
+## Best Practice
+
+Prefer CSS-based responsive design (Tailwind breakpoints). Use these hooks only when you need conditional **rendering logic** — not just styling changes.

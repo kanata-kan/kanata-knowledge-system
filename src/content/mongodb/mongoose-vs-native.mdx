@@ -1,0 +1,84 @@
+---
+title: "Mongoose vs Native MongoDB Driver"
+slug: "mongoose-vs-native"
+category: "mongodb"
+type: "note"
+difficulty: "intermediate"
+tags: ["mongoose", "driver", "comparison", "decision"]
+summary: "When to use Mongoose ODM vs the native MongoDB driver — trade-offs and decision guide."
+createdAt: "2025-04-20"
+updatedAt: "2025-05-08"
+pinned: false
+technologies: ["mongodb", "mongoose", "node.js"]
+---
+
+## Native Driver
+
+```typescript
+import { MongoClient, ObjectId } from 'mongodb'
+
+const client = new MongoClient(process.env.MONGODB_URI!)
+const db = client.db('myapp')
+
+// Insert
+await db.collection('users').insertOne({
+  name: 'Alice',
+  email: 'alice@example.com',
+  createdAt: new Date(),
+})
+
+// Find with type
+type User = { _id: ObjectId; name: string; email: string }
+const user = await db.collection<User>('users').findOne({ email: 'alice@example.com' })
+```
+
+## Mongoose
+
+```typescript
+import mongoose, { Schema } from 'mongoose'
+
+const userSchema = new Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  createdAt: { type: Date, default: Date.now },
+})
+
+const User = mongoose.model('User', userSchema)
+
+// Insert
+await User.create({ name: 'Alice', email: 'alice@example.com' })
+
+// Find
+const user = await User.findOne({ email: 'alice@example.com' })
+```
+
+## Decision Matrix
+
+| Factor | Native Driver | Mongoose |
+|--------|-------------|----------|
+| Type safety | Manual types | Schema + TS types |
+| Validation | Manual | Built-in |
+| Performance | Faster | Slight overhead |
+| Learning curve | Lower | Higher |
+| Flexibility | Full MongoDB API | Abstracted |
+| Middleware/hooks | None | Pre/post hooks |
+| Population | Manual $lookup | `.populate()` |
+| Bundle size | Smaller | Larger |
+
+## Use Native When:
+- Maximum performance needed
+- Simple CRUD operations
+- You handle validation elsewhere (Zod)
+- You want full MongoDB API access
+- Serverless/edge deployment (smaller bundle)
+
+## Use Mongoose When:
+- Complex schemas with validation
+- Need middleware (pre-save hooks, etc.)
+- Team needs schema documentation
+- Heavy use of relationships/population
+- Rapid prototyping
+
+## My Recommendation
+
+For new projects: **Native driver + Zod validation**. You get type safety from Zod, full MongoDB API access, and better performance. Use Mongoose only if your team needs its schema-as-documentation and middleware features.
