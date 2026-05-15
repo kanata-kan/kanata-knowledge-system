@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import {
   getEntryBySlug,
   getEntriesByCategory,
   getAllCategories,
-  CATEGORIES,
 } from "@/lib/content";
+import { CATEGORIES } from "@/lib/taxonomy";
 import { Badge } from "@/components/ui/Badge";
 import { EntryBody } from "@/components/knowledge/EntryBody";
+import { EntryBackLink } from "@/components/knowledge/EntryBackLink";
 import { EntryViewTracker } from "@/components/knowledge/EntryViewTracker";
 
 type Props = {
@@ -40,13 +40,10 @@ export default async function EntryPage({ params }: Props) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Link
+      <EntryBackLink
         href={`/knowledge/${category}`}
-        className="inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors mb-6"
-      >
-        <span>&larr;</span>
-        <span>Back to {categoryInfo?.label || category}</span>
-      </Link>
+        label={`Back to ${categoryInfo?.label || category}`}
+      />
 
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-3">

@@ -1,34 +1,46 @@
 import Link from "next/link";
-import { getRecentEntries, getPinnedEntries, CATEGORIES } from "@/lib/content";
+import { getRecentEntries, getPinnedEntries } from "@/lib/content";
+import { CATEGORIES } from "@/lib/taxonomy";
 import { EntryCard } from "@/components/knowledge/EntryCard";
 import { RecentlyViewed } from "@/components/knowledge/RecentlyViewed";
+import { CategoryIcon } from "@/components/ui/CategoryIcon";
 
 export default function DashboardHome() {
   const recentEntries = getRecentEntries(8);
   const pinnedEntries = getPinnedEntries();
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted mt-1">
+    <div className="max-w-6xl mx-auto space-y-12">
+      <section data-dashboard-section className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          Dashboard
+        </h1>
+        <p className="text-muted text-base">
           Quick access to your developer knowledge base
         </p>
-      </div>
+      </section>
 
-      <section>
-        <h2 className="text-lg font-semibold mb-4">Categories</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <section data-dashboard-section className="space-y-6">
+        <h2 className="text-xl font-semibold text-foreground">Categories</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.slug}
               href={`/knowledge/${cat.slug}`}
-              className="flex items-center gap-3 p-4 border border-border rounded-lg hover:bg-card transition-colors"
+              className="group flex items-center gap-4 rounded-xl border border-border/50 p-5 transition-all duration-200 hover:border-border hover:bg-card/80 hover:shadow-lg hover:shadow-black/20"
             >
-              <span className="text-2xl">{cat.icon}</span>
-              <div>
-                <p className="font-medium text-sm">{cat.label}</p>
-                <p className="text-xs text-muted">{cat.description}</p>
+              <CategoryIcon
+                category={cat}
+                size="lg"
+                className="transition-transform duration-200 group-hover:scale-[1.03]"
+              />
+              <div className="space-y-1">
+                <p className="font-semibold text-base text-foreground">
+                  {cat.label}
+                </p>
+                <p className="text-sm text-muted leading-relaxed">
+                  {cat.description}
+                </p>
               </div>
             </Link>
           ))}
@@ -36,9 +48,9 @@ export default function DashboardHome() {
       </section>
 
       {pinnedEntries.length > 0 && (
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Pinned</h2>
-          <div className="space-y-3">
+        <section data-dashboard-section className="space-y-6">
+          <h2 className="text-xl font-semibold text-foreground">Pinned</h2>
+          <div className="space-y-4">
             {pinnedEntries.map((entry) => (
               <EntryCard
                 key={`${entry.category}-${entry.slug}`}
@@ -52,9 +64,11 @@ export default function DashboardHome() {
       <RecentlyViewed />
 
       {recentEntries.length > 0 && (
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Latest Entries</h2>
-          <div className="space-y-3">
+        <section data-dashboard-section className="space-y-6">
+          <h2 className="text-xl font-semibold text-foreground">
+            Latest Entries
+          </h2>
+          <div className="space-y-4">
             {recentEntries.map((entry) => (
               <EntryCard
                 key={`${entry.category}-${entry.slug}`}

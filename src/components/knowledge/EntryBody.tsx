@@ -23,7 +23,7 @@ const components = {
 
 export function EntryBody({ content }: { content: string }) {
   return (
-    <article className="prose-invert max-w-none [&>h2]:text-xl [&>h2]:font-semibold [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-lg [&>h3]:font-medium [&>h3]:mt-6 [&>h3]:mb-3 [&>p]:text-foreground/80 [&>p]:leading-relaxed [&>p]:mb-4 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-4 [&>ul>li]:text-foreground/80 [&>ul>li]:mb-1 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-4 [&>ol>li]:text-foreground/80 [&>ol>li]:mb-1 [&>blockquote]:border-l-2 [&>blockquote]:border-accent [&>blockquote]:pl-4 [&>blockquote]:text-muted [&>blockquote]:italic">
+    <article className="prose-invert max-w-none [&>h2]:mb-4 [&>h2]:mt-8 [&>h2]:text-xl [&>h2]:font-semibold [&>h3]:mb-3 [&>h3]:mt-6 [&>h3]:text-lg [&>h3]:font-medium [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-foreground/80 [&>ul]:mb-4 [&>ul]:list-disc [&>ul]:ps-6 [&>ul>li]:mb-1 [&>ul>li]:text-foreground/80 [&>ol]:mb-4 [&>ol]:list-decimal [&>ol]:ps-6 [&>ol>li]:mb-1 [&>ol>li]:text-foreground/80 [&>blockquote]:border-s-2 [&>blockquote]:border-accent [&>blockquote]:ps-4 [&>blockquote]:text-muted [&>blockquote]:italic">
       <MDXRemote source={content} components={components} />
     </article>
   );

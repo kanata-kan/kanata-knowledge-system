@@ -1,0 +1,191 @@
+---
+title: "Git Daily Commands"
+slug: "git-daily-commands"
+category: "cli"
+type: "reference"
+difficulty: "beginner"
+tags: ["git", "github", "branch", "commit"]
+summary: "مرجع سريع لأكثر أوامر Git استعمالاً في العمل اليومي وإدارة الـ branches والـ commits."
+createdAt: "2026-05-15"
+updatedAt: "2026-05-15"
+---
+
+## Create New Branch
+
+```bash
+git checkout -b feature/auth
+```
+
+إنشاء branch جديد والانتقال إليه مباشرة.
+
+---
+
+## Switch Branch
+
+```bash
+git checkout main
+```
+
+الانتقال إلى branch أخرى.
+
+---
+
+## Check Current Status
+
+```bash
+git status
+```
+
+عرض الملفات المعدلة والـ staged changes.
+
+---
+
+## Stage All Changes
+
+```bash
+git add .
+```
+
+إضافة جميع التعديلات إلى staging area.
+
+---
+
+## Commit Changes
+
+```bash
+git commit -m "add authentication middleware"
+```
+
+إنشاء commit جديد مع رسالة توضيحية.
+
+---
+
+## Push Current Branch
+
+```bash
+git push origin branch-name
+```
+
+رفع الـ branch الحالية إلى GitHub.
+
+---
+
+## Pull Latest Changes
+
+```bash
+git pull origin main
+```
+
+جلب آخر التحديثات من remote branch.
+
+---
+
+## Delete Local Branch
+
+```bash
+git branch -D feature/auth
+```
+
+حذف branch محلياً بالقوة.
+
+---
+
+## Delete Remote Branch
+
+```bash
+git push origin --delete feature/auth
+```
+
+حذف branch من GitHub.
+
+---
+
+## Rename Current Branch
+
+```bash
+git branch -m new-branch-name
+```
+
+تغيير اسم الـ branch الحالية.
+
+---
+
+## Undo Last Commit (Keep Changes)
+
+```bash
+git reset --soft HEAD~1
+```
+
+حذف آخر commit مع الاحتفاظ بالتعديلات.
+
+---
+
+## Undo Last Commit (Remove Changes)
+
+```bash
+git reset --hard HEAD~1
+```
+
+حذف آخر commit والتعديلات المرتبطة به نهائياً.
+
+---
+
+## Save Temporary Changes
+
+```bash
+git stash
+```
+
+حفظ التعديلات الحالية مؤقتاً بدون commit.
+
+---
+
+## Restore Stashed Changes
+
+```bash
+git stash pop
+```
+
+استرجاع آخر stash محفوظ.
+
+---
+
+## View Commit History
+
+```bash
+git log --oneline
+```
+
+عرض مختصر وآمن لتاريخ الـ commits.
+
+---
+
+## Force Push
+
+```bash
+git push --force
+```
+
+رفع التعديلات بالقوة.
+
+> استعمله بحذر خصوصاً داخل team projects.
+
+---
+
+## Clone Repository
+
+```bash
+git clone repository-url
+```
+
+تحميل المشروع من GitHub إلى الجهاز.
+
+---
+
+## Initialize Git
+
+```bash
+git init
+```
+
+تهيئة Git داخل المشروع الحالي.

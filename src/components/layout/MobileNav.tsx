@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Search, Tags } from "lucide-react";
 import { CATEGORIES } from "@/lib/taxonomy";
+import { CategoryIcon } from "@/components/ui/CategoryIcon";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -11,11 +13,11 @@ export function MobileNav() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden p-2 text-muted hover:text-foreground"
+        className="p-2 text-muted hover:text-foreground md:hidden"
         aria-label="Open menu"
       >
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -30,17 +32,20 @@ export function MobileNav() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div
+          className="fixed inset-0 z-50 md:hidden"
+          data-dashboard-overlay="open"
+        >
           <div
             className="fixed inset-0 bg-black/60"
             onClick={() => setOpen(false)}
           />
-          <nav className="fixed inset-y-0 left-0 w-72 bg-card border-r border-border overflow-y-auto">
-            <div className="p-6 border-b border-border flex items-center justify-between">
+          <nav className="fixed inset-y-0 start-0 w-72 overflow-y-auto border-e border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border p-6">
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
-                className="text-accent font-bold text-lg"
+                className="text-lg font-bold text-accent"
               >
                 KKS
               </Link>
@@ -49,7 +54,7 @@ export function MobileNav() {
                 className="text-muted hover:text-foreground"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -66,7 +71,7 @@ export function MobileNav() {
 
             <div className="p-4">
               <div className="mb-6">
-                <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3 px-2">
+                <h3 className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-muted">
                   Quick Access
                 </h3>
                 <ul className="space-y-1">
@@ -74,9 +79,11 @@ export function MobileNav() {
                     <Link
                       href="/search"
                       onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-border/50 rounded-md"
+                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-foreground/80 hover:bg-border/50 hover:text-foreground"
                     >
-                      <span>⌕</span>
+                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-foreground/5 text-muted">
+                        <Search className="h-4 w-4" strokeWidth={2.15} />
+                      </span>
                       <span>Search</span>
                     </Link>
                   </li>
@@ -84,9 +91,11 @@ export function MobileNav() {
                     <Link
                       href="/tags"
                       onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-border/50 rounded-md"
+                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-foreground/80 hover:bg-border/50 hover:text-foreground"
                     >
-                      <span>#</span>
+                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-foreground/5 text-muted">
+                        <Tags className="h-4 w-4" strokeWidth={2.15} />
+                      </span>
                       <span>Tags</span>
                     </Link>
                   </li>
@@ -94,7 +103,7 @@ export function MobileNav() {
               </div>
 
               <div>
-                <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3 px-2">
+                <h3 className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-muted">
                   Categories
                 </h3>
                 <ul className="space-y-1">
@@ -103,9 +112,9 @@ export function MobileNav() {
                       <Link
                         href={`/knowledge/${cat.slug}`}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 px-3 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-border/50 rounded-md"
+                        className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-foreground/80 hover:bg-border/50 hover:text-foreground"
                       >
-                        <span>{cat.icon}</span>
+                        <CategoryIcon category={cat} size="sm" />
                         <span>{cat.label}</span>
                       </Link>
                     </li>

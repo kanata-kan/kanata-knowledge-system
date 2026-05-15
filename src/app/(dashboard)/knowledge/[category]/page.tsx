@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
-import {
-  getEntriesByCategory,
-  getAllCategories,
-  CATEGORIES,
-} from "@/lib/content";
+import { getEntriesByCategory, getAllCategories } from "@/lib/content";
+import { CATEGORIES } from "@/lib/taxonomy";
 import { EntryCard } from "@/components/knowledge/EntryCard";
+import { CategoryIcon } from "@/components/ui/CategoryIcon";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -28,7 +26,7 @@ export default async function CategoryPage({ params }: Props) {
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-2xl">{categoryInfo.icon}</span>
+          <CategoryIcon category={categoryInfo} size="md" />
           <h1 className="text-2xl font-bold tracking-tight">
             {categoryInfo.label}
           </h1>

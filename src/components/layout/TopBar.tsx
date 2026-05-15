@@ -1,25 +1,22 @@
 import Link from "next/link";
 import { MobileNav } from "./MobileNav";
+import { DashboardShortcutDirectory } from "./DashboardShortcutDirectory";
 
 export function TopBar() {
   return (
-    <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4 md:px-6 shrink-0">
-      <div className="flex items-center gap-3">
+    <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/50 bg-card/50 px-6">
+      <div className="flex min-w-0 items-center gap-4">
         <MobileNav />
-        <Link href="/" className="md:hidden text-accent font-bold text-lg">
+        <Link href="/" className="md:hidden text-accent font-bold text-xl">
           KKS
         </Link>
-        <span className="hidden md:block text-sm text-muted">
+        <span className="hidden truncate text-sm font-medium text-muted/80 md:block">
           Developer Knowledge Dashboard
         </span>
       </div>
 
       <div className="flex items-center gap-3">
-        <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-muted bg-background border border-border rounded">
-          <span>Ctrl</span>
-          <span>+</span>
-          <span>K</span>
-        </kbd>
+        <DashboardShortcutDirectory />
       </div>
     </header>
   );

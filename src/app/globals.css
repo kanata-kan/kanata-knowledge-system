@@ -20,10 +20,10 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
@@ -50,6 +50,9 @@ pre,
 kbd,
 samp {
   font-family: var(--font-jetbrains-mono), "Courier New", monospace;
+  direction: ltr;
+  text-align: start;
+  unicode-bidi: isolate;
   font-feature-settings:
     "tnum" 1,
     "zero" 1;
@@ -78,15 +81,37 @@ pre {
 }
 
 .prose pre {
-  margin-left: -1rem;
-  margin-right: -1rem;
+  margin-inline: -1rem;
   border-radius: 0;
+}
+
+.dashboard-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(115, 115, 115, 0.55) transparent;
+}
+
+.dashboard-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.dashboard-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(115, 115, 115, 0.55);
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  background-clip: padding-box;
+}
+
+.dashboard-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(34, 197, 94, 0.45);
 }
 
 @media (min-width: 640px) {
   .prose pre {
-    margin-left: 0;
-    margin-right: 0;
+    margin-inline: 0;
     border-radius: 0.5rem;
   }
 }
