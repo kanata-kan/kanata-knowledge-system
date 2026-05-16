@@ -1,25 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import type { RecentEntry } from "@/lib/use-recent";
 import { useRecentEntries } from "@/lib/use-recent";
 
-export function RecentlyViewed() {
-  const { entries } = useRecentEntries();
+type RecentlyViewedProps = {
+  validEntries: Array<Pick<RecentEntry, "category" | "slug">>;
+};
+
+export function RecentlyViewed({ validEntries }: RecentlyViewedProps) {
+  const { entries } = useRecentEntries(validEntries);
 
   if (entries.length === 0) return null;
 
   return (
-    <section>
-      <h2 className="text-lg font-semibold mb-4">Recently Viewed</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <section data-dashboard-section className="space-y-6">
+      <h2 className="text-xl font-semibold text-foreground">Recently Viewed</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {entries.slice(0, 6).map((entry) => (
           <Link
             key={`${entry.category}-${entry.slug}`}
             href={`/knowledge/${entry.category}/${entry.slug}`}
-            className="flex items-center gap-3 px-3 py-2 border border-border rounded-lg hover:bg-card transition-colors text-sm"
+            className="flex items-center gap-4 px-4 py-3 border border-border/50 rounded-lg hover:bg-card/80 hover:border-border transition-all duration-200 hover:shadow-md hover:shadow-black/10 group"
           >
-            <span className="text-foreground truncate">{entry.title}</span>
-            <span className="text-xs text-muted shrink-0 capitalize ml-auto">
+            <span className="text-foreground font-medium text-sm truncate text-start group-hover:text-accent transition-colors">
+              {entry.title}
+            </span>
+            <span className="ms-auto shrink-0 text-xs text-muted/70 capitalize">
               {entry.category}
             </span>
           </Link>

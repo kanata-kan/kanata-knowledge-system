@@ -1,22 +1,22 @@
-import Link from 'next/link'
-import type { EntryMeta } from '@/types/content'
-import { Badge } from '@/components/ui/Badge'
+import Link from "next/link";
+import type { EntryMeta } from "@/types/content";
+import { Badge } from "@/components/ui/Badge";
 
 export function EntryCard({ entry }: { entry: EntryMeta }) {
   return (
     <Link
       href={`/knowledge/${entry.category}/${entry.slug}`}
-      className="block p-4 border border-border rounded-lg hover:bg-card hover:border-border/80 transition-colors"
+      className="block p-5 border border-border/50 rounded-xl hover:bg-card/80 hover:border-border transition-all duration-200 hover:shadow-lg hover:shadow-black/20 group"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h3 className="font-medium text-sm text-foreground truncate">
+      <div className="flex items-start justify-between gap-5">
+        <div className="min-w-0 flex-1 space-y-3 text-start">
+          <h3 className="font-semibold text-base text-foreground truncate group-hover:text-accent transition-colors">
             {entry.title}
           </h3>
-          <p className="text-xs text-muted mt-1 line-clamp-2">
+          <p className="text-sm text-muted leading-relaxed line-clamp-2">
             {entry.summary}
           </p>
-          <div className="flex items-center gap-2 mt-3 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
             <Badge variant="type" value={entry.type} />
             <Badge variant="difficulty" value={entry.difficulty} />
             {entry.tags.slice(0, 3).map((tag) => (
@@ -24,10 +24,10 @@ export function EntryCard({ entry }: { entry: EntryMeta }) {
             ))}
           </div>
         </div>
-        <span className="text-xs text-muted shrink-0">
+        <span className="shrink-0 whitespace-nowrap text-end text-xs text-muted/70">
           {entry.updatedAt}
         </span>
       </div>
     </Link>
-  )
+  );
 }

@@ -20,7 +20,7 @@ export function Callout({ type = "info", children }: CalloutProps) {
   return (
     <div
       className={cn(
-        "my-4 px-4 py-3 rounded-lg border-l-4 text-sm",
+        "my-4 rounded-lg border-s-4 px-4 py-3 text-sm",
         style.border,
         style.bg
       )}

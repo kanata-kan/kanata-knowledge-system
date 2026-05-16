@@ -1,0 +1,241 @@
+---
+title: "KKS Content Workflow"
+slug: "kks-content-workflow"
+category: "architecture"
+type: "workflow"
+difficulty: "beginner"
+tags: ["kks", "workflow", "content-system", "mdx", "content"]
+summary: "مرجع عملي لكتابة وتنظيم وتحديث محتوى KKS كما هو مطبق حاليًا داخل المشروع، من اختيار category إلى التحقق من الظهور داخل البحث والواجهة."
+createdAt: "2026-05-15"
+updatedAt: "2026-05-15"
+sources:
+  - label: "KKS Blueprint"
+    href: "https://github.com/kanata-kan/kanata-knowledge-system/blob/main/src/docs/kanata-knowledge-system-blueprint.md"
+  - label: "Content Loader Implementation"
+    href: "https://github.com/kanata-kan/kanata-knowledge-system/blob/main/src/lib/content.ts"
+---
+
+## هدف هذا الملف
+
+هذا الملف يشرح workflow الحالي لكتابة محتوى KKS كما هو مطبق فعليًا داخل المشروع.
+
+الهدف ليس كتابة notes عشوائية، بل إنشاء entries قابلة للاسترجاع بسرعة داخل dashboard والبحث.
+
+---
+
+## متى ننشئ Entry جديدة
+
+أنشئ entry جديدة عندما:
+
+- تكرر نفس البحث أكثر من مرة
+- تنسى command أو workflow باستمرار
+- تواجه bug أخذ وقتًا طويلًا للحل
+- تكتشف pattern قابلة لإعادة الاستعمال
+- تريد حفظ knowledge لها قيمة مستقبلية
+
+---
+
+## المسار الصحيح للملف
+
+أي entry جديدة يجب أن توضع داخل:
+
+```txt
+src/content/[category]/entry-name.mdx
+```
+
+قواعد أساسية:
+
+- اسم الملف هو الـ `slug` الحقيقي
+- اسم الفولدر هو الـ `category` الحقيقي
+- لا ننشئ subfolders داخل category
+- كل ملف `.mdx` يجب أن يمثل فكرة واحدة واضحة
+
+---
+
+## Categories الحالية
+
+حسب KKS الحالي، الـ categories المفعلة هي:
+
+- architecture
+- cli
+
+إذا أردت إضافة category جديدة فلا يكفي إنشاء folder فقط.
+
+يجب أيضًا:
+
+1. إضافة category داخل `src/types/content.ts`
+2. إضافتها داخل `src/lib/taxonomy.ts`
+3. إنشاء folder جديد داخل `src/content/<category>/`
+4. إضافة entry واحدة على الأقل داخلها
+
+---
+
+## Entry Types المدعومة
+
+حدد نوع المعرفة المناسب:
+
+- snippet
+- command
+- note
+- pattern
+- prompt
+- workflow
+- reference
+- debug
+
+---
+
+## Frontmatter المطلوبة
+
+الحقول المطلوبة في كل entry:
+
+- `title`
+- `slug`
+- `category`
+- `type`
+- `difficulty`
+- `tags`
+- `summary`
+- `createdAt`
+- `updatedAt`
+
+الحقول الاختيارية:
+
+- `pinned`
+- `technologies`
+- `relatedSlugs`
+
+مثال عملي:
+
+```yaml
+---
+title: "JWT Debug Checklist"
+slug: "jwt-debug-checklist"
+category: "cli"
+type: "reference"
+difficulty: "beginner"
+tags: ["jwt", "debug", "auth"]
+summary: "Checklist سريع للتحقق من مشاكل JWT المتكررة أثناء التطوير."
+createdAt: "2026-05-15"
+updatedAt: "2026-05-15"
+pinned: false
+technologies: ["node.js", "jwt"]
+relatedSlugs: []
+---
+```
+
+قواعد مهمة:
+
+- `slug` يجب أن يطابق اسم الملف
+- `category` يجب أن تطابق اسم الفولدر
+- `updatedAt` يجب تحديثه عند كل تعديل مهم
+- الأفضل استعمال تاريخ بصيغة `YYYY-MM-DD`
+
+---
+
+## كتابة محتوى مناسب لـ KKS
+
+القواعد:
+
+- ابدأ من `##` وليس `#`
+- اجعل sections قصيرة وواضحة
+- استعمل headings مباشرة وقابلة للمسح السريع
+- استعمل code blocks مع language identifier واضح
+- اجعل الشرح مختصرًا ومركزًا على retrieval
+- اكتب بالعربية، وأبق technical terms بالإنجليزية
+- entry واحدة = فكرة واحدة قابلة للاسترجاع
+
+مثال جيد على بنية entry:
+
+1. تعريف سريع للمشكلة أو الفكرة
+2. الحل أو الـ workflow
+3. example أو command أو code block
+4. ملاحظات قصيرة أو pitfalls
+
+---
+
+## ما هو المدعوم فعليًا داخل MDX
+
+حاليًا يمكن الاعتماد على:
+
+- markdown العادي
+- headings
+- lists
+- blockquotes
+- fenced code blocks
+- `TerminalBlock`
+
+لا تعتمد على custom components إضافية إلا إذا كانت مربوطة فعليًا داخل `src/components/knowledge/EntryBody.tsx`.
+
+---
+
+## Workflow اليومي لإضافة محتوى جديد
+
+1. اختر `category` مناسبة من categories الحالية
+2. أنشئ ملفًا داخل `src/content/<category>/`
+3. اكتب frontmatter كاملة
+4. اكتب محتوى منظم وقابل للمسح السريع
+5. حدّث `updatedAt`
+6. شغّل:
+
+```bash
+npm run generate-index
+```
+
+7. اختبر محليًا داخل category page والبحث
+
+---
+
+## Workflow تحديث Entry موجودة
+
+قم بالتعديل عندما:
+
+- يتغير API
+- يتغير workflow
+- يظهر approach أفضل
+- تكتشف edge cases جديدة
+
+بعد أي تحديث مهم:
+
+1. عدّل المحتوى
+2. حدّث `updatedAt`
+3. راجع `summary` إذا تغيرت الفكرة أو الاستعمال
+4. راجع `tags` إذا ظهرت كلمات بحث أفضل
+5. شغّل `npm run generate-index`
+
+---
+
+## Validation Checklist
+
+قبل اعتماد أي entry، تأكد من التالي:
+
+- هل الملف داخل `src/content/<category>/`؟
+- هل `slug` تطابق اسم الملف؟
+- هل `category` تطابق اسم الفولدر؟
+- هل frontmatter كاملة وصحيحة؟
+- هل entry تظهر داخل `/knowledge/[category]`؟
+- هل category نفسها موجودة داخل sidebar؟
+- هل entry تظهر داخل search بعد تشغيل `npm run generate-index`؟
+- هل الـ `summary` واضحة وقابلة للبحث؟
+- هل التشغيل المحلي أو build يمر بدون errors؟
+
+---
+
+## KKS Writing Rules
+
+- لا تكتب tutorials طويلة بدون حاجة
+- entry واحدة = فكرة واحدة
+- لا تخزن knowledge بدون retrieval value
+- الأولوية للمشاكل اليومية المتكررة
+- technical terms تبقى بالإنجليزية
+- explanations بالعربية
+- tags تكون lowercase وواضحة
+- summary يجب أن تساعد البحث لا أن تكون وصفًا عامًا فقط
+
+---
+
+## المبدأ الأساسي
+
+KKS is not a notes app.
+
+KKS is a developer retrieval system.

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllEntries, getAllTags, CATEGORIES } from "@/lib/content";
+import { site } from "@/constants/site";
 
-const BASE_URL = "https://kks.kanata.dev";
+const BASE_URL = site.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries = getAllEntries();

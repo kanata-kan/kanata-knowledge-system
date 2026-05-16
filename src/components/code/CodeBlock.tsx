@@ -14,7 +14,7 @@ export async function CodeBlock({ children, language, filename }: CodeBlockProps
   })
 
   return (
-    <div className="relative group my-4 rounded-lg overflow-hidden border border-border">
+    <div dir="ltr" className="relative group my-4 overflow-hidden rounded-lg border border-border">
       {filename && (
         <div className="flex items-center px-4 py-2 bg-card border-b border-border">
           <span className="text-xs text-muted font-mono">{filename}</span>

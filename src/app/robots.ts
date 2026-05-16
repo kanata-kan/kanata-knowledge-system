@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { site } from "@/constants/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://kks.kanata.dev/sitemap.xml",
+    sitemap: `${site.url}/sitemap.xml`,
   };
 }

@@ -103,7 +103,10 @@ export function CommandPalette() {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]"
+      data-dashboard-overlay="open"
+    >
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={close}
@@ -134,7 +137,8 @@ export function CommandPalette() {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Search knowledge base..."
-            className="flex-1 px-3 py-3 bg-transparent text-sm text-foreground placeholder:text-muted focus:outline-none"
+            dir="auto"
+            className="flex-1 bg-transparent px-3 py-3 text-start text-sm text-foreground placeholder:text-muted focus:outline-none"
           />
           <kbd className="text-xs text-muted bg-background px-1.5 py-0.5 rounded border border-border">
             Esc
@@ -151,7 +155,7 @@ export function CommandPalette() {
               <button
                 key={`${entry.category}-${entry.slug}`}
                 onClick={() => handleSelect(entry)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                className={`w-full rounded-lg px-3 py-2.5 text-start text-sm transition-colors ${
                   i === selectedIndex
                     ? "bg-accent/10 text-foreground"
                     : "text-foreground/80 hover:bg-foreground/5"
@@ -159,7 +163,7 @@ export function CommandPalette() {
               >
                 <div className="flex items-center justify-between">
                   <span className="font-medium truncate">{entry.title}</span>
-                  <span className="text-xs text-muted shrink-0 ml-2 capitalize">
+                  <span className="ms-2 shrink-0 text-xs text-muted capitalize">
                     {entry.category}
                   </span>
                 </div>
@@ -171,7 +175,10 @@ export function CommandPalette() {
           )}
         </div>
 
-        <div className="border-t border-border px-4 py-2 flex items-center gap-4 text-xs text-muted">
+        <div
+          dir="ltr"
+          className="flex items-center gap-4 overflow-x-auto border-t border-border px-4 py-2 text-xs text-muted"
+        >
           <span>
             <kbd className="px-1 py-0.5 bg-background border border-border rounded">
               ↑↓

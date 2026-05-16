@@ -4,7 +4,7 @@ type StepsProps = {
 
 export function Steps({ children }: StepsProps) {
   return (
-    <div className="my-4 space-y-4 border-l-2 border-border pl-6 ml-2">
+    <div className="my-4 ms-2 space-y-4 border-s-2 border-border ps-6">
       {children}
     </div>
   );
@@ -18,7 +18,7 @@ type StepProps = {
 export function Step({ title, children }: StepProps) {
   return (
     <div className="relative">
-      <div className="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-accent/20 border-2 border-accent" />
+      <div className="absolute top-1 h-4 w-4 rounded-full border-2 border-accent bg-accent/20 [inset-inline-start:-31px]" />
       <h4 className="font-medium text-sm text-foreground mb-1">{title}</h4>
       <div className="text-sm text-foreground/80">{children}</div>
     </div>

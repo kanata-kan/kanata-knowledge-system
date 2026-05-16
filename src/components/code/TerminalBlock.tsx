@@ -9,7 +9,7 @@ export function TerminalBlock({ children, label }: TerminalBlockProps) {
   const lines = children.trim().split('\n')
 
   return (
-    <div className="relative my-4 rounded-lg overflow-hidden border border-border">
+    <div dir="ltr" className="relative my-4 overflow-hidden rounded-lg border border-border">
       {label && (
         <div className="flex items-center px-4 py-2 bg-card border-b border-border">
           <span className="text-xs text-muted">{label}</span>
@@ -23,7 +23,7 @@ export function TerminalBlock({ children, label }: TerminalBlockProps) {
                 <span className="text-gray-500">{line}</span>
               ) : (
                 <>
-                  <span className="text-green-400 select-none mr-2">$</span>
+                  <span className="me-2 text-green-400 select-none">$</span>
                   <span className="text-foreground">{line}</span>
                 </>
               )}
