@@ -7,6 +7,20 @@ const PUBLIC_DIR = path.join(process.cwd(), "public");
 const SEARCH_INDEX_PATH = path.join(PUBLIC_DIR, "search-index.json");
 const SW_CONFIG_PATH = path.join(PUBLIC_DIR, "sw-config.js");
 
+function asString(value, fallback) {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : fallback;
+}
+
+function asStringArray(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item) => typeof item === "string");
+}
+
 function getContentEntries() {
   const entries = [];
 
@@ -25,18 +39,18 @@ function getContentEntries() {
       const fullPath = path.join(categoryPath, file);
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(fileContents);
-      const slug = file.replace(/\.mdx$/, "");
+      const fileSlug = file.replace(/\.mdx$/, "");
 
       entries.push({
-        title: data.title,
-        slug,
+        title: asString(data.title, fileSlug),
+        slug: asString(data.slug, fileSlug),
         category,
-        type: data.type,
-        tags: data.tags || [],
-        summary: data.summary,
-        difficulty: data.difficulty,
-        technologies: data.technologies || [],
-        updatedAt: data.updatedAt || data.createdAt || "",
+        type: asString(data.type, "note"),
+        tags: asStringArray(data.tags),
+        summary: asString(data.summary, ""),
+        difficulty: asString(data.difficulty, "beginner"),
+        technologies: asStringArray(data.technologies),
+        updatedAt: asString(data.updatedAt, asString(data.createdAt, "")),
       });
     }
   }

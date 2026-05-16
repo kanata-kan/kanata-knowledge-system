@@ -1,0 +1,270 @@
+---
+title: "Service Layer Responsibility"
+slug: "service-layer-responsibility"
+category: "architecture"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["service-layer", "business-logic", "separation-of-concerns"]
+summary: "شرح مسؤولية الـ Service Layer وكيفية عزل business logic وتحويل البيانات بعيداً عن الـ UI والـ hooks."
+createdAt: "2026-05-15"
+updatedAt: "2026-05-15"
+---
+
+# Service Layer Responsibility (مسؤولية طبقة الـ Service)
+
+## Problem (المشكل)
+
+فين كيوقع chaos ملي business logic كتدخل مباشرة للـ component أو hook؟
+
+غالباً كيوقع:
+
+- تكرار logic
+- صعوبة testing
+- coupling قوي بين UI و data
+- صعوبة إعادة الاستخدام
+- components كتولي ضخمة
+
+---
+
+## Core Principle (المبدأ الأساسي)
+
+Service Layer مسؤولة فقط على:
+
+- business logic
+- data transformation
+- normalization
+- orchestration
+- formatting
+- reusable operations
+
+الـ Service Layer كتكون بحال:
+
+> العقل التشغيلي للتطبيق.
+
+لكن بدون UI.
+
+---
+
+## Visual Architecture (الهيكلة البصرية)
+
+```txt
+Component Layer
+      ↓
+Hook Layer
+      ↓
+Service Layer
+      ↓
+API / Database
+```
+
+---
+
+## What Belongs Here (شنو خاص يكون هنا)
+
+✅ data transformation
+
+✅ formatting
+
+✅ calculations
+
+✅ reusable business rules
+
+✅ mapping API responses
+
+✅ orchestration between services
+
+---
+
+## What Should NEVER Exist Here (شنو ممنوع يكون هنا)
+
+❌ JSX
+
+❌ React hooks
+
+❌ useEffect
+
+❌ browser APIs
+
+❌ DOM manipulation
+
+❌ UI rendering
+
+---
+
+## Wrong Example (مثال خاطئ)
+
+```tsx
+export function UserCard({ user }) {
+  const fullName = `${user.first_name} ${user.last_name}`;
+
+  return <div>{fullName}</div>;
+}
+```
+
+المشكل هنا:
+
+الـ component ولات مسؤولة على:
+
+- UI
+- transformation
+- formatting
+
+هاد الشي كيخلق coupling.
+
+---
+
+## Correct Example (المثال الصحيح)
+
+### userService.ts
+
+```ts
+export function mapUser(user) {
+  return {
+    fullName: `${user.first_name} ${user.last_name}`,
+  };
+}
+```
+
+---
+
+### useUser.ts
+
+```ts
+import { mapUser } from "@/services/userService";
+
+export async function useUser() {
+  const response = await fetch("/api/user");
+
+  const rawUser = await response.json();
+
+  return mapUser(rawUser);
+}
+```
+
+---
+
+### UserCard.tsx
+
+```tsx
+export function UserCard({ user }) {
+  return <div>{user.fullName}</div>;
+}
+```
+
+---
+
+## Mental Decision Rule (قاعدة اتخاذ القرار)
+
+إذا كنت تسأل:
+
+> "كيف يجب أن تبدو البيانات لكي يفهمها التطبيق؟"
+
+فأنت غالباً داخل:
+
+# Service Layer
+
+---
+
+## Real World Usage (الاستخدام الحقيقي في الشركات)
+
+الـ Service Layer كتستعمل بزاف ف:
+
+- dashboards
+- ecommerce systems
+- analytics platforms
+- admin panels
+- enterprise apps
+
+علاش؟
+
+حيت الأنظمة الكبيرة كتحتاج:
+
+- isolation
+- predictable logic
+- reusable rules
+- scalable architecture
+
+---
+
+## Testing Advantage (ميزة الـ Testing)
+
+الـ Service Layer سهلة بزاف فالاختبار.
+
+مثال:
+
+```ts
+expect(mapUser(apiUser).fullName).toBe("Abdelilah Wajid");
+```
+
+ماحتاج:
+
+- React
+- browser
+- rendering
+
+هاد الشي كيخلي:
+
+- unit tests أسرع
+- debugging أسهل
+- refactoring أكثر أماناً
+
+---
+
+## Common Mistakes (أخطاء شائعة)
+
+### 1. Business Logic Inside Components
+
+```tsx
+const total = items.reduce(...)
+```
+
+إذا logic كبيرة → غالباً مكانها service.
+
+---
+
+### 2. API Mapping Inside Hooks
+
+```ts
+const formatted = {
+  ...
+}
+```
+
+إذا transformation معقدة → غالباً service.
+
+---
+
+### 3. Analytics Inside Service Layer
+
+analytics concern مستقل.
+
+ما تخلطوش مع business logic.
+
+---
+
+## Related Concepts (مفاهيم مرتبطة)
+
+- separation-of-concerns
+- hook-layer
+- component-layer
+- clean-architecture
+- business-logic
+- orchestration
+
+---
+
+## Main Takeaway (الخلاصة الأساسية)
+
+Service Layer exists to:
+
+- isolate business logic
+- reduce coupling
+- simplify UI
+- improve reuse
+- make systems scalable
+
+الهدف الحقيقي ماشي تنظيم folders.
+
+الهدف:
+
+# تقليل تأثير التغييرات داخل النظام.

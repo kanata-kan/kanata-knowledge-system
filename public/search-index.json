@@ -16,6 +16,20 @@
     "technologies": []
   },
   {
+    "title": "Service Layer Responsibility",
+    "slug": "service-layer-responsibility",
+    "category": "architecture",
+    "type": "pattern",
+    "tags": [
+      "service-layer",
+      "business-logic",
+      "separation-of-concerns"
+    ],
+    "summary": "شرح مسؤولية الـ Service Layer وكيفية عزل business logic وتحويل البيانات بعيداً عن الـ UI والـ hooks.",
+    "difficulty": "intermediate",
+    "technologies": []
+  },
+  {
     "title": "Git Daily Commands",
     "slug": "git-daily-commands",
     "category": "cli",
@@ -28,6 +42,21 @@
     ],
     "summary": "مرجع سريع لأكثر أوامر Git استعمالاً في العمل اليومي وإدارة الـ branches والـ commits.",
     "difficulty": "beginner",
+    "technologies": []
+  },
+  {
+    "title": "useMemo Recalculation Pattern",
+    "slug": "usememo-recalculation-pattern",
+    "category": "react",
+    "type": "pattern",
+    "tags": [
+      "react",
+      "usememo",
+      "performance",
+      "rendering"
+    ],
+    "summary": "شرح useMemo وكيفية منع إعادة الحساب غير الضرورية داخل React components وتحقيق stable references بشكل صحيح.",
+    "difficulty": "intermediate",
     "technologies": []
   }
 ]

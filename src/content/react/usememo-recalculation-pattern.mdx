@@ -1,0 +1,407 @@
+---
+title: "useMemo Recalculation Pattern"
+slug: "usememo-recalculation-pattern"
+category: "react"
+type: "pattern"
+difficulty: "intermediate"
+tags: ["react", "usememo", "performance", "rendering"]
+summary: "شرح useMemo وكيفية منع إعادة الحساب غير الضرورية داخل React components وتحقيق stable references بشكل صحيح."
+createdAt: "2026-05-15"
+updatedAt: "2026-05-15"
+---
+
+## Problem — المشكل
+
+في React، أي component كتعاود render:
+
+- functions كتعاود تتنفذ
+- calculations كتعاود تتحسب
+- objects كتتخلق من جديد
+
+حتى إلا البيانات نفسها ما تبدلاتش — هاد الشي ممكن يخلق:
+
+<table>
+  <thead>
+    <tr>
+      <th>المشكلة</th>
+      <th>السبب</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Slow rendering</td>
+      <td>calculations تتعاود في كل render</td>
+    </tr>
+    <tr>
+      <td>Unstable references</td>
+      <td>objects جديدة في كل مرة حتى بدون تغيير</td>
+    </tr>
+    <tr>
+      <td>Useless child re-renders</td>
+      <td>children كيشوفو reference جديدة = render جديد</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Core Principle — المبدأ الأساسي
+
+`useMemo` كتخزن نتيجة calculation وتعاود تستعملها حتى تتبدل dependencies.
+
+> **"إلى المعطيات ما تبدلاتش، استعمل النتيجة القديمة."**
+
+---
+
+## Visual Flow — التدفق البصري
+
+```txt
+Render
+  ↓
+Need Calculation?
+  ↓
+Dependencies Changed?
+   ├── YES → Recalculate
+   └── NO  → Return Cached Value
+```
+
+---
+
+## Basic Example — مثال بسيط
+
+### ❌ Without useMemo
+
+```tsx
+function Dashboard({ users }) {
+  const activeUsers = users.filter((user) => user.active);
+
+  return <UsersList users={activeUsers} />;
+}
+```
+
+> **المشكل:** كل render → `filter()` كتعاود تخدم حتى إلا `users` ما تبدلاتش.
+
+---
+
+### ✅ With useMemo
+
+```tsx
+const activeUsers = useMemo(() => {
+  return users.filter((user) => user.active);
+}, [users]);
+```
+
+> **النتيجة:** calculation كتخدم فقط عند تغير `users` — باقي renders كيستعملو cached value.
+
+---
+
+## Mental Model — النموذج العقلي
+
+`useMemo` هي **cache صغيرة داخل component** — لكن:
+
+- مؤقتة
+- مرتبطة بالـ render lifecycle
+- ليست global cache
+
+---
+
+## When To Use — متى نستعملها
+
+<table>
+  <thead>
+    <tr>
+      <th>✅ استعملها عندما</th>
+      <th>❌ لا تستعملها عندما</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Calculations ثقيلة</td>
+      <td>Simple variables</td>
+    </tr>
+    <tr>
+      <td>Filtering كبير أو sorting معقد</td>
+      <td>Trivial calculations</td>
+    </tr>
+    <tr>
+      <td>Data transformation مكلفة</td>
+      <td>Premature optimization</td>
+    </tr>
+    <tr>
+      <td>Stable object references مطلوبة</td>
+      <td>Values لا تسبب performance issues</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Stable Reference Problem — مشكلة الـ Reference
+
+### ❌ Wrong
+
+```tsx
+const config = {
+  dark: true,
+};
+```
+
+> كل render → object جديد حتى إلا القيمة نفسها — يكسر `React.memo()` على children.
+
+---
+
+### ✅ Correct
+
+```tsx
+const config = useMemo(() => {
+  return {
+    dark: true,
+  };
+}, []);
+```
+
+> Reference ثابتة = children ما كيعاودوش render بلا سبب.
+
+---
+
+## Common Mistakes — أخطاء شائعة
+
+### 1. useMemo Everywhere
+
+```tsx
+// ❌ useless — string ثابتة لا تحتاج memo
+const name = useMemo(() => "abdelilah", []);
+```
+
+---
+
+### 2. Confusing useMemo With Performance Magic
+
+`useMemo` **ليست** performance booster سحرية — هي فقط **تمنع إعادة الحساب غير الضرورية**.
+
+---
+
+### 3. Missing Dependencies
+
+```tsx
+// ❌ خطأ — data مش فـ dependencies
+useMemo(() => {
+  return calculate(data);
+}, []);
+```
+
+> إذا `data` تتبدل، النتيجة غادي تولي **stale**.
+
+---
+
+## Decision Rule — قاعدة اتخاذ القرار
+
+اسأل نفسك:
+
+> "هل هاد الـ calculation فعلاً مكلفة أو كتسبب re-renders غير ضرورية؟"
+
+- **نعم** → `useMemo` مناسبة
+- **لا** → لا تستعملها
+
+---
+
+## Real World Usage — الاستخدام الحقيقي
+
+`useMemo` شائعة بزاف في:
+
+- Dashboards و analytics systems
+- Data-heavy tables و filtering systems
+- Charts و expensive data transformations
+
+---
+
+## useMemo vs useEffect — الفرق الأساسي
+
+هاد الزوج الفرق بينهم مهم — غلطة شائعة كتخلط بينهم.
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>
+        <code>useMemo</code>
+      </th>
+      <th>
+        <code>useEffect</code>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**الهدف**</td>
+      <td>حساب قيمة وتخزينها</td>
+      <td>تنفيذ side effect</td>
+    </tr>
+    <tr>
+      <td>**كيرجع شي؟**</td>
+      <td>✅ نعم — كيرجع value</td>
+      <td>❌ لا — ما كيرجع والو</td>
+    </tr>
+    <tr>
+      <td>**وقت التنفيذ**</td>
+      <td>أثناء الـ render</td>
+      <td>بعد ما الـ render يكمل</td>
+    </tr>
+    <tr>
+      <td>**الاستعمال**</td>
+      <td>calculations / transformations / stable refs</td>
+      <td>API calls / subscriptions / DOM manipulation</td>
+    </tr>
+    <tr>
+      <td>**Pure؟**</td>
+      <td>✅ يجب أن يكون pure</td>
+      <td>❌ ممكن يكون impure</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### القاعدة السريعة
+
+> **"كتحتاج قيمة؟ → `useMemo` — كتحتاج تنفذ شي؟ → `useEffect`"**
+
+---
+
+### مثال يوضح الفرق
+
+#### ❌ خطأ شائع — استعمال useEffect لحساب قيمة
+
+```tsx
+const [activeUsers, setActiveUsers] = useState([]);
+
+useEffect(() => {
+  // ❌ هاد مش side effect — هي مجرد calculation
+  setActiveUsers(users.filter((u) => u.active));
+}, [users]);
+```
+
+المشكل:
+
+- render إضافي بسبب `setState`
+- كود معقد بلا سبب
+- `activeUsers` كتولي stale لحظة واحدة قبل update
+
+---
+
+#### ✅ الصح — استعمل useMemo مباشرة
+
+```tsx
+const activeUsers = useMemo(() => {
+  return users.filter((u) => u.active);
+}, [users]);
+```
+
+نتيجة synchronous مباشرة — بلا re-render إضافي.
+
+---
+
+#### ✅ useEffect في مكانه الصحيح
+
+```tsx
+useEffect(() => {
+  // ✅ هاد side effect حقيقي — fetch من API
+  fetch("/api/users")
+    .then((res) => res.json())
+    .then((data) => setUsers(data));
+}, []);
+```
+
+---
+
+### متى تختار كل واحدة
+
+<table>
+  <thead>
+    <tr>
+      <th>السيناريو</th>
+      <th>الصح</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Filter array من data موجودة</td>
+      <td>
+        <code>useMemo</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Sort أو transform data</td>
+      <td>
+        <code>useMemo</code>
+      </td>
+    </tr>
+    <tr>
+      <td>حساب total أو aggregate</td>
+      <td>
+        <code>useMemo</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Fetch data من API</td>
+      <td>
+        <code>useEffect</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Subscribe لـ WebSocket أو event</td>
+      <td>
+        <code>useEffect</code>
+      </td>
+    </tr>
+    <tr>
+      <td>تعديل DOM مباشرة</td>
+      <td>
+        <code>useEffect</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Set timer أو interval</td>
+      <td>
+        <code>useEffect</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Sync مع localStorage</td>
+      <td>
+        <code>useEffect</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Main Takeaway — الخلاصة
+
+`useMemo` **لا تجعل React أسرع تلقائياً** — هي فقط تساعد على:
+
+<table>
+  <thead>
+    <tr>
+      <th>الهدف</th>
+      <th>كيفاش</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>إعادة استعمال النتائج القديمة</td>
+      <td>caching نتيجة الـ calculation</td>
+    </tr>
+    <tr>
+      <td>منع calculations غير الضرورية</td>
+      <td>dependency tracking دقيق</td>
+    </tr>
+    <tr>
+      <td>الحفاظ على stable references</td>
+      <td>نفس object reference بين renders</td>
+    </tr>
+  </tbody>
+</table>
+
+> **الهدف الحقيقي: تقليل العمل غير الضروري أثناء الـ render.**

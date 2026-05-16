@@ -17,9 +17,9 @@ sources:
 
 ## هدف هذا الملف
 
-هذا الملف يشرح workflow الحالي لكتابة محتوى KKS كما هو مطبق فعليًا داخل المشروع.
+هذا الملف يشرح **workflow الحالي** لكتابة محتوى KKS كما هو مطبق فعليًا داخل المشروع.
 
-الهدف ليس كتابة notes عشوائية، بل إنشاء entries قابلة للاسترجاع بسرعة داخل dashboard والبحث.
+الهدف ليس كتابة notes عشوائية، بل إنشاء **entries قابلة للاسترجاع بسرعة** داخل dashboard والبحث.
 
 ---
 
@@ -27,7 +27,7 @@ sources:
 
 أنشئ entry جديدة عندما:
 
-- تكرر نفس البحث أكثر من مرة
+- تكرر نفس البحث **أكثر من مرة**
 - تنسى command أو workflow باستمرار
 - تواجه bug أخذ وقتًا طويلًا للحل
 - تكتشف pattern قابلة لإعادة الاستعمال
@@ -43,12 +43,38 @@ sources:
 src/content/[category]/entry-name.mdx
 ```
 
-قواعد أساسية:
-
-- اسم الملف هو الـ `slug` الحقيقي
-- اسم الفولدر هو الـ `category` الحقيقي
-- لا ننشئ subfolders داخل category
-- كل ملف `.mdx` يجب أن يمثل فكرة واحدة واضحة
+<table>
+  <thead>
+    <tr>
+      <th>القاعدة</th>
+      <th>التفصيل</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>اسم الملف</td>
+      <td>
+        هو الـ <code>slug</code> الحقيقي
+      </td>
+    </tr>
+    <tr>
+      <td>اسم الفولدر</td>
+      <td>
+        هو الـ <code>category</code> الحقيقي
+      </td>
+    </tr>
+    <tr>
+      <td>subfolders</td>
+      <td>ممنوعة داخل category</td>
+    </tr>
+    <tr>
+      <td>
+        كل ملف <code>.mdx</code>
+      </td>
+      <td>يجب أن يمثل فكرة واحدة واضحة</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -56,12 +82,11 @@ src/content/[category]/entry-name.mdx
 
 حسب KKS الحالي، الـ categories المفعلة هي:
 
-- architecture
-- cli
+- `architecture`
+- `cli`
+- `react`
 
-إذا أردت إضافة category جديدة فلا يكفي إنشاء folder فقط.
-
-يجب أيضًا:
+إذا أردت إضافة category جديدة، لا يكفي إنشاء folder فقط — يجب أيضًا:
 
 1. إضافة category داخل `src/types/content.ts`
 2. إضافتها داخل `src/lib/taxonomy.ts`
@@ -72,40 +97,176 @@ src/content/[category]/entry-name.mdx
 
 ## Entry Types المدعومة
 
-حدد نوع المعرفة المناسب:
-
-- snippet
-- command
-- note
-- pattern
-- prompt
-- workflow
-- reference
-- debug
+<table>
+  <thead>
+    <tr>
+      <th>النوع</th>
+      <th>متى تستعمله</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>snippet</code>
+      </td>
+      <td>code صغيرة قابلة لإعادة الاستعمال بسرعة</td>
+    </tr>
+    <tr>
+      <td>
+        <code>command</code>
+      </td>
+      <td>أمر terminal / CLI جاهز للتنفيذ</td>
+    </tr>
+    <tr>
+      <td>
+        <code>note</code>
+      </td>
+      <td>شرح قصير أو فكرة لفهم مفهوم معين</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pattern</code>
+      </td>
+      <td>طريقة متكررة أو حل قابل لإعادة الاستخدام</td>
+    </tr>
+    <tr>
+      <td>
+        <code>prompt</code>
+      </td>
+      <td>AI prompt أو instruction جاهزة</td>
+    </tr>
+    <tr>
+      <td>
+        <code>workflow</code>
+      </td>
+      <td>خطوات عمل متسلسلة لإنجاز مهمة معينة</td>
+    </tr>
+    <tr>
+      <td>
+        <code>reference</code>
+      </td>
+      <td>مرجع سريع للرجوع إلى معلومة بسرعة</td>
+    </tr>
+    <tr>
+      <td>
+        <code>debug</code>
+      </td>
+      <td>مشكلة حقيقية أو debugging case واضح</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Frontmatter المطلوبة
 
-الحقول المطلوبة في كل entry:
+<table>
+  <thead>
+    <tr>
+      <th>الحقل</th>
+      <th>الحالة</th>
+      <th>الدور</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>title</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>العنوان الذي يظهر في الواجهة والبحث</td>
+    </tr>
+    <tr>
+      <td>
+        <code>slug</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>المعرّف داخل الرابط — يجب أن يطابق اسم الملف</td>
+    </tr>
+    <tr>
+      <td>
+        <code>category</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>القسم — يجب أن يطابق اسم المجلد</td>
+    </tr>
+    <tr>
+      <td>
+        <code>type</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>
+        نوع المعرفة: <code>note</code> / <code>workflow</code> /{" "}
+        <code>reference</code> ...
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>difficulty</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>
+        <code>beginner</code> / <code>intermediate</code> /{" "}
+        <code>advanced</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>tags</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>كلمات مفتاحية للبحث والاسترجاع</td>
+    </tr>
+    <tr>
+      <td>
+        <code>summary</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>وصف قصير يساعد على الفهم السريع ونتائج البحث</td>
+    </tr>
+    <tr>
+      <td>
+        <code>createdAt</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>
+        تاريخ الإنشاء — صيغة <code>YYYY-MM-DD</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>updatedAt</code>
+      </td>
+      <td>✅ مطلوب</td>
+      <td>تاريخ آخر تحديث مهم</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pinned</code>
+      </td>
+      <td>⬜ اختياري</td>
+      <td>تثبيت الـ entry في الواجهة</td>
+    </tr>
+    <tr>
+      <td>
+        <code>technologies</code>
+      </td>
+      <td>⬜ اختياري</td>
+      <td>
+        تقنيات مرتبطة: <code>react</code> / <code>node.js</code> ...
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>relatedSlugs</code>
+      </td>
+      <td>⬜ اختياري</td>
+      <td>روابط داخلية لـ entries مرتبطة</td>
+    </tr>
+  </tbody>
+</table>
 
-- `title`
-- `slug`
-- `category`
-- `type`
-- `difficulty`
-- `tags`
-- `summary`
-- `createdAt`
-- `updatedAt`
-
-الحقول الاختيارية:
-
-- `pinned`
-- `technologies`
-- `relatedSlugs`
-
-مثال عملي:
+### مثال عملي
 
 ```yaml
 ---
@@ -124,33 +285,27 @@ relatedSlugs: []
 ---
 ```
 
-قواعد مهمة:
-
-- `slug` يجب أن يطابق اسم الملف
-- `category` يجب أن تطابق اسم الفولدر
-- `updatedAt` يجب تحديثه عند كل تعديل مهم
-- الأفضل استعمال تاريخ بصيغة `YYYY-MM-DD`
+> **قواعد مهمة:** `slug` يطابق اسم الملف — `category` تطابق اسم الفولدر — `updatedAt` يُحدَّث عند كل تعديل مهم.
 
 ---
 
 ## كتابة محتوى مناسب لـ KKS
 
-القواعد:
+### القواعد الأساسية
 
 - ابدأ من `##` وليس `#`
 - اجعل sections قصيرة وواضحة
 - استعمل headings مباشرة وقابلة للمسح السريع
 - استعمل code blocks مع language identifier واضح
-- اجعل الشرح مختصرًا ومركزًا على retrieval
 - اكتب بالعربية، وأبق technical terms بالإنجليزية
-- entry واحدة = فكرة واحدة قابلة للاسترجاع
+- **entry واحدة = فكرة واحدة قابلة للاسترجاع**
 
-مثال جيد على بنية entry:
+### البنية المثالية لـ entry
 
-1. تعريف سريع للمشكلة أو الفكرة
-2. الحل أو الـ workflow
-3. example أو command أو code block
-4. ملاحظات قصيرة أو pitfalls
+1. **تعريف سريع** للمشكلة أو الفكرة
+2. **الحل أو الـ workflow**
+3. **example** أو command أو code block
+4. **ملاحظات قصيرة** أو pitfalls
 
 ---
 
@@ -158,48 +313,85 @@ relatedSlugs: []
 
 حاليًا يمكن الاعتماد على:
 
-- markdown العادي
-- headings
-- lists
-- blockquotes
-- fenced code blocks
-- `TerminalBlock`
+- Markdown العادي: headings / lists / blockquotes
+- Fenced code blocks مع language identifier
+- HTML tables مباشرة داخل MDX
+- `<TerminalBlock />` component
 
-لا تعتمد على custom components إضافية إلا إذا كانت مربوطة فعليًا داخل `src/components/knowledge/EntryBody.tsx`.
+> لا تعتمد على custom components إضافية إلا إذا كانت مربوطة فعليًا داخل `src/components/knowledge/EntryBody.tsx`.
 
 ---
 
-## Workflow اليومي لإضافة محتوى جديد
-
-1. اختر `category` مناسبة من categories الحالية
-2. أنشئ ملفًا داخل `src/content/<category>/`
-3. اكتب frontmatter كاملة
-4. اكتب محتوى منظم وقابل للمسح السريع
-5. حدّث `updatedAt`
-6. شغّل:
+## Workflow اليومي — إضافة محتوى جديد
 
 ```bash
+# 1. أنشئ الملف داخل category المناسبة
+touch src/content/<category>/entry-name.mdx
+
+# 2. اكتب frontmatter + محتوى منظم
+
+# 3. شغّل generate-index بعد الانتهاء
 npm run generate-index
 ```
 
-7. اختبر محليًا داخل category page والبحث
+<table>
+  <thead>
+    <tr>
+      <th>الخطوة</th>
+      <th>التفصيل</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>
+        اختر <code>category</code> مناسبة من الـ categories الحالية
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>
+        أنشئ ملفًا داخل <code>src/content/&lt;category&gt;/</code>
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>اكتب frontmatter كاملة وصحيحة</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>اكتب محتوى منظم وقابل للمسح السريع</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>
+        حدّث <code>updatedAt</code>
+      </td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>
+        شغّل <code>npm run generate-index</code>
+      </td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>اختبر محليًا داخل category page والبحث</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Workflow تحديث Entry موجودة
 
-قم بالتعديل عندما:
+قم بالتعديل عندما يتغير API أو workflow أو يظهر approach أفضل أو تكتشف edge cases جديدة.
 
-- يتغير API
-- يتغير workflow
-- يظهر approach أفضل
-- تكتشف edge cases جديدة
-
-بعد أي تحديث مهم:
+بعد أي تعديل مهم:
 
 1. عدّل المحتوى
 2. حدّث `updatedAt`
-3. راجع `summary` إذا تغيرت الفكرة أو الاستعمال
+3. راجع `summary` إذا تغيرت الفكرة
 4. راجع `tags` إذا ظهرت كلمات بحث أفضل
 5. شغّل `npm run generate-index`
 
@@ -209,33 +401,80 @@ npm run generate-index
 
 قبل اعتماد أي entry، تأكد من التالي:
 
-- هل الملف داخل `src/content/<category>/`؟
-- هل `slug` تطابق اسم الملف؟
-- هل `category` تطابق اسم الفولدر؟
-- هل frontmatter كاملة وصحيحة؟
-- هل entry تظهر داخل `/knowledge/[category]`؟
-- هل category نفسها موجودة داخل sidebar؟
-- هل entry تظهر داخل search بعد تشغيل `npm run generate-index`؟
-- هل الـ `summary` واضحة وقابلة للبحث؟
-- هل التشغيل المحلي أو build يمر بدون errors؟
+<table>
+  <thead>
+    <tr>
+      <th>✓</th>
+      <th>السؤال</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>☐</td>
+      <td>
+        الملف داخل <code>src/content/&lt;category&gt;/</code>؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>
+        <code>slug</code> يطابق اسم الملف؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>
+        <code>category</code> تطابق اسم الفولدر؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>frontmatter كاملة وصحيحة؟</td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>
+        Entry تظهر داخل <code>/knowledge/[category]</code>؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>Category موجودة داخل sidebar؟</td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>
+        Entry تظهر داخل search بعد <code>npm run generate-index</code>؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>
+        الـ <code>summary</code> واضحة وقابلة للبحث؟
+      </td>
+    </tr>
+    <tr>
+      <td>☐</td>
+      <td>Build يمر بدون errors؟</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## KKS Writing Rules
 
 - لا تكتب tutorials طويلة بدون حاجة
-- entry واحدة = فكرة واحدة
+- **entry واحدة = فكرة واحدة**
 - لا تخزن knowledge بدون retrieval value
 - الأولوية للمشاكل اليومية المتكررة
-- technical terms تبقى بالإنجليزية
-- explanations بالعربية
-- tags تكون lowercase وواضحة
-- summary يجب أن تساعد البحث لا أن تكون وصفًا عامًا فقط
+- Technical terms تبقى بالإنجليزية
+- Explanations بالعربية
+- Tags تكون lowercase وواضحة
+- Summary يجب أن تساعد البحث لا أن تكون وصفًا عامًا فقط
 
 ---
 
-## المبدأ الأساسي
-
-KKS is not a notes app.
-
-KKS is a developer retrieval system.
+> **KKS is not a notes app.**
+>
+> **KKS is a developer retrieval system.**

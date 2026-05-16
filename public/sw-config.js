@@ -1,4 +1,4 @@
-self.__KKS_SW_VERSION = "kks-1778944474300";
+self.__KKS_SW_VERSION = "kks-1778955264239";
 self.__KKS_APP_ROUTES = [
   "/",
   "/search",
@@ -15,9 +15,13 @@ self.__KKS_APP_ROUTES = [
   "/search-index.json",
   "/knowledge/architecture",
   "/knowledge/cli",
+  "/knowledge/react",
   "/knowledge/architecture/kks-content-workflow",
+  "/knowledge/architecture/service-layer-responsibility",
   "/knowledge/cli/git-daily-commands",
+  "/knowledge/react/usememo-recalculation-pattern",
   "/tags/branch",
+  "/tags/business-logic",
   "/tags/commit",
   "/tags/content",
   "/tags/content-system",
@@ -25,5 +29,11 @@ self.__KKS_APP_ROUTES = [
   "/tags/github",
   "/tags/kks",
   "/tags/mdx",
+  "/tags/performance",
+  "/tags/react",
+  "/tags/rendering",
+  "/tags/separation-of-concerns",
+  "/tags/service-layer",
+  "/tags/usememo",
   "/tags/workflow"
 ];

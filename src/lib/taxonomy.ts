@@ -1,5 +1,5 @@
 import type { CategoryInfo } from "@/types/content";
-import { Network, SquareTerminal } from "lucide-react";
+import { Atom, Network, SquareTerminal } from "lucide-react";
 
 export const CATEGORIES: CategoryInfo[] = [
   {
@@ -20,6 +20,16 @@ export const CATEGORIES: CategoryInfo[] = [
     tone: {
       iconClassName: "text-emerald-300",
       surfaceClassName: "bg-emerald-500/10",
+    },
+  },
+  {
+    slug: "react",
+    label: "React",
+    description: "Hooks, rendering, state, and performance patterns",
+    icon: Atom,
+    tone: {
+      iconClassName: "text-cyan-300",
+      surfaceClassName: "bg-cyan-500/10",
     },
   },
 ];
