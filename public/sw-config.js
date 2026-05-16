@@ -1,4 +1,4 @@
-self.__KKS_SW_VERSION = "kks-1778955264239";
+self.__KKS_SW_VERSION = "kks-1778961083000";
 self.__KKS_APP_ROUTES = [
   "/",
   "/search",

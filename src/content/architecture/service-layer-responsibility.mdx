@@ -10,261 +10,439 @@ createdAt: "2026-05-15"
 updatedAt: "2026-05-15"
 ---
 
-# Service Layer Responsibility (مسؤولية طبقة الـ Service)
+## Problem — المشكل
 
-## Problem (المشكل)
+ملي business logic كتدخل مباشرة للـ component أو hook، كيولي عندك:
 
-فين كيوقع chaos ملي business logic كتدخل مباشرة للـ component أو hook؟
-
-غالباً كيوقع:
-
-- تكرار logic
-- صعوبة testing
-- coupling قوي بين UI و data
-- صعوبة إعادة الاستخدام
-- components كتولي ضخمة
+<table>
+  <thead>
+    <tr>
+      <th>المشكلة</th>
+      <th>النتيجة</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Logic مكررة في أكثر من مكان</td>
+      <td>أي تغيير = تعديل في أماكن متعددة</td>
+    </tr>
+    <tr>
+      <td>Coupling قوي بين UI و data</td>
+      <td>ما تقدرش تبدل واحدة بدون ما تكسر الأخرى</td>
+    </tr>
+    <tr>
+      <td>Components ضخمة</td>
+      <td>صعبة القراءة، صعبة الـ testing</td>
+    </tr>
+    <tr>
+      <td>Logic غير قابلة لإعادة الاستخدام</td>
+      <td>تكرار نفس الكود في كل مكان</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
-## Core Principle (المبدأ الأساسي)
+## Visual Architecture — هيكلة النظام
+
+<ArchitectureDiagram>
+  {`
+┌─────────────────────────────────────┐
+│          Component Layer            │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│            Hook Layer               │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│         ✦  Service Layer  ✦         │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│           API / Database            │
+└─────────────────────────────────────┘
+`}
+</ArchitectureDiagram>
+
+<table>
+  <thead>
+    <tr>
+      <th>الطبقة</th>
+      <th>المسؤولية</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Component Layer</strong>
+      </td>
+      <td>UI فقط — عرض البيانات الجاهزة</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Hook Layer</strong>
+      </td>
+      <td>state management و data fetching</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Service Layer ✦</strong>
+      </td>
+      <td>business logic و transformation</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>API / Database</strong>
+      </td>
+      <td>raw data — ما فيها معالجة</td>
+    </tr>
+  </tbody>
+</table>
+
+> كل طبقة مسؤولة على شي واحد — ما تعرفش شنو كاين فوقها أو تحتها.
+
+---
+
+## Core Principle — المبدأ الأساسي
 
 Service Layer مسؤولة فقط على:
 
-- business logic
-- data transformation
-- normalization
-- orchestration
-- formatting
-- reusable operations
+- **business logic** — القواعد اللي تحكم البيانات
+- **data transformation** — تحويل raw data لشكل يفهمه التطبيق
+- **normalization** — توحيد البيانات من مصادر مختلفة
+- **orchestration** — تنسيق بين services متعددة
+- **formatting** — تنسيق القيم قبل العرض
+- **reusable operations** — عمليات مشتركة بين أكثر من feature
 
-الـ Service Layer كتكون بحال:
-
-> العقل التشغيلي للتطبيق.
-
-لكن بدون UI.
+> **"العقل التشغيلي للتطبيق — بدون UI."**
 
 ---
 
-## Visual Architecture (الهيكلة البصرية)
+## What Belongs Here — شنو خاصو يكون هنا
 
-```txt
-Component Layer
-      ↓
-Hook Layer
-      ↓
-Service Layer
-      ↓
-API / Database
-```
-
----
-
-## What Belongs Here (شنو خاص يكون هنا)
-
-✅ data transformation
-
-✅ formatting
-
-✅ calculations
-
-✅ reusable business rules
-
-✅ mapping API responses
-
-✅ orchestration between services
-
----
-
-## What Should NEVER Exist Here (شنو ممنوع يكون هنا)
-
-❌ JSX
-
-❌ React hooks
-
-❌ useEffect
-
-❌ browser APIs
-
-❌ DOM manipulation
-
-❌ UI rendering
+<table>
+  <thead>
+    <tr>
+      <th>✅ ينتمي للـ Service Layer</th>
+      <th>❌ ممنوع في Service Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data transformation</td>
+      <td>JSX أو UI rendering</td>
+    </tr>
+    <tr>
+      <td>Formatting (dates, prices, names)</td>
+      <td>
+        React hooks (<code>useEffect</code>, <code>useState</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>Business calculations</td>
+      <td>
+        Browser APIs (<code>window</code>, <code>document</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>API response mapping</td>
+      <td>DOM manipulation</td>
+    </tr>
+    <tr>
+      <td>Reusable business rules</td>
+      <td>Analytics أو tracking</td>
+    </tr>
+    <tr>
+      <td>Orchestration بين services</td>
+      <td>Routing أو navigation</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
-## Wrong Example (مثال خاطئ)
+## Data Flow — كيفاش تمشي البيانات
+
+<ArchitectureDiagram>
+  {`
+API Response (raw)
+       │
+       ▼                    [1]
+┌──────────────────────┐
+│   mapUser(rawUser)   │
+└──────────┬───────────┘
+           │
+           ▼                [2]
+┌──────────────────────┐
+│   useUser() hook     │
+└──────────┬───────────┘
+           │
+           ▼                [3]
+┌──────────────────────┐
+│  <UserCard user={} > │
+└──────────────────────┘
+`}
+</ArchitectureDiagram>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>المرحلة</th>
+      <th>شنو كيوقع هنا</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>[1]</strong>
+      </td>
+      <td>Service Layer تدخل هنا</td>
+      <td>transform + normalize — raw data تتحول لـ shape نظيف</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>[2]</strong>
+      </td>
+      <td>Hook Layer</td>
+      <td>fetch + تمرير data النظيفة للـ component</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>[3]</strong>
+      </td>
+      <td>Component Layer</td>
+      <td>عرض فقط — بلا logic، بلا transformation</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Wrong vs Correct — مقارنة عملية
+
+### ❌ Wrong — logic داخل Component
 
 ```tsx
 export function UserCard({ user }) {
+  // ❌ transformation داخل UI
   const fullName = `${user.first_name} ${user.last_name}`;
+  const isVerified = user.status === "verified" && user.email_confirmed;
+  const joinedDate = new Date(user.created_at).toLocaleDateString("ar-MA");
 
-  return <div>{fullName}</div>;
+  return (
+    <div>
+      <p>{fullName}</p>
+      <p>{joinedDate}</p>
+      {isVerified && <Badge>Verified</Badge>}
+    </div>
+  );
 }
 ```
 
-المشكل هنا:
-
-الـ component ولات مسؤولة على:
-
-- UI
-- transformation
-- formatting
-
-هاد الشي كيخلق coupling.
+> **المشكل:** Component ولات مسؤولة على UI + transformation + business rules في نفس الوقت.
 
 ---
 
-## Correct Example (المثال الصحيح)
+### ✅ Correct — كل طبقة في مكانها
 
-### userService.ts
+**`services/userService.ts`** — transformation هنا فقط
 
 ```ts
-export function mapUser(user) {
+export function mapUser(raw) {
   return {
-    fullName: `${user.first_name} ${user.last_name}`,
+    fullName: `${raw.first_name} ${raw.last_name}`,
+    isVerified: raw.status === "verified" && raw.email_confirmed,
+    joinedDate: new Date(raw.created_at).toLocaleDateString("ar-MA"),
   };
 }
 ```
 
----
-
-### useUser.ts
+**`hooks/useUser.ts`** — fetch + mapping
 
 ```ts
 import { mapUser } from "@/services/userService";
 
-export async function useUser() {
-  const response = await fetch("/api/user");
-
-  const rawUser = await response.json();
-
-  return mapUser(rawUser);
+export async function useUser(id: string) {
+  const res = await fetch(`/api/users/${id}`);
+  const raw = await res.json();
+  return mapUser(raw);
 }
 ```
 
----
-
-### UserCard.tsx
+**`components/UserCard.tsx`** — UI فقط، بلا logic
 
 ```tsx
 export function UserCard({ user }) {
-  return <div>{user.fullName}</div>;
+  return (
+    <div>
+      <p>{user.fullName}</p>
+      <p>{user.joinedDate}</p>
+      {user.isVerified && <Badge>Verified</Badge>}
+    </div>
+  );
 }
 ```
 
 ---
 
-## Mental Decision Rule (قاعدة اتخاذ القرار)
+## Testing Advantage — سهولة الـ Testing
 
-إذا كنت تسأل:
+Service Layer pure functions = تستعملها بدون React أو browser:
+
+```ts
+// ✅ unit test بسيط — بدون rendering، بدون browser
+expect(mapUser(rawUser).fullName).toBe("Abdelilah Wajid");
+expect(mapUser(rawUser).isVerified).toBe(true);
+```
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>بدون Service Layer</th>
+      <th>مع Service Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unit tests</td>
+      <td>تحتاج render كامل</td>
+      <td>function عادية تستعملها مباشرة</td>
+    </tr>
+    <tr>
+      <td>Debugging</td>
+      <td>تدور في component + hook + logic</td>
+      <td>تعزل المشكلة في طبقة واحدة</td>
+    </tr>
+    <tr>
+      <td>Refactoring</td>
+      <td>خطر — logic مفرقة</td>
+      <td>آمن — تبدل في مكان واحد</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Common Mistakes — أخطاء شائعة
+
+### 1. Business Logic داخل Component
+
+```tsx
+// ❌ logic كبيرة مكانها service
+const total = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+const discounted = total > 500 ? total * 0.9 : total;
+```
+
+---
+
+### 2. API Mapping داخل Hook
+
+```ts
+// ❌ transformation مكانها service
+const formatted = {
+  name: res.data.user_name,
+  avatar: res.data.profile_picture_url,
+};
+```
+
+---
+
+### 3. Analytics داخل Service Layer
+
+```ts
+// ❌ analytics concern مستقل — ما تخلطوش
+export function mapOrder(raw) {
+  trackEvent("order_mapped"); // ❌
+  return { ... };
+}
+```
+
+---
+
+## Decision Rule — قاعدة اتخاذ القرار
 
 > "كيف يجب أن تبدو البيانات لكي يفهمها التطبيق؟"
 
-فأنت غالباً داخل:
+إذا كنت كتسأل هاد السؤال — مكانك Service Layer.
 
-# Service Layer
-
----
-
-## Real World Usage (الاستخدام الحقيقي في الشركات)
-
-الـ Service Layer كتستعمل بزاف ف:
-
-- dashboards
-- ecommerce systems
-- analytics platforms
-- admin panels
-- enterprise apps
-
-علاش؟
-
-حيت الأنظمة الكبيرة كتحتاج:
-
-- isolation
-- predictable logic
-- reusable rules
-- scalable architecture
-
----
-
-## Testing Advantage (ميزة الـ Testing)
-
-الـ Service Layer سهلة بزاف فالاختبار.
-
-مثال:
-
-```ts
-expect(mapUser(apiUser).fullName).toBe("Abdelilah Wajid");
-```
-
-ماحتاج:
-
-- React
-- browser
-- rendering
-
-هاد الشي كيخلي:
-
-- unit tests أسرع
-- debugging أسهل
-- refactoring أكثر أماناً
+<table>
+  <thead>
+    <tr>
+      <th>السيناريو</th>
+      <th>فين تحطه؟</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Map API response لـ shape تفهمها الـ app</td>
+      <td>Service Layer</td>
+    </tr>
+    <tr>
+      <td>Format date أو price للعرض</td>
+      <td>Service Layer</td>
+    </tr>
+    <tr>
+      <td>حساب discount أو total</td>
+      <td>Service Layer</td>
+    </tr>
+    <tr>
+      <td>Fetch data من API</td>
+      <td>Hook Layer</td>
+    </tr>
+    <tr>
+      <td>Manage local state</td>
+      <td>Hook Layer</td>
+    </tr>
+    <tr>
+      <td>عرض بيانات جاهزة</td>
+      <td>Component Layer</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
-## Common Mistakes (أخطاء شائعة)
+## Main Takeaway — الخلاصة
 
-### 1. Business Logic Inside Components
-
-```tsx
-const total = items.reduce(...)
-```
-
-إذا logic كبيرة → غالباً مكانها service.
-
----
-
-### 2. API Mapping Inside Hooks
-
-```ts
-const formatted = {
-  ...
-}
-```
-
-إذا transformation معقدة → غالباً service.
-
----
-
-### 3. Analytics Inside Service Layer
-
-analytics concern مستقل.
-
-ما تخلطوش مع business logic.
-
----
-
-## Related Concepts (مفاهيم مرتبطة)
-
-- separation-of-concerns
-- hook-layer
-- component-layer
-- clean-architecture
-- business-logic
-- orchestration
-
----
-
-## Main Takeaway (الخلاصة الأساسية)
-
-Service Layer exists to:
-
-- isolate business logic
-- reduce coupling
-- simplify UI
-- improve reuse
-- make systems scalable
-
-الهدف الحقيقي ماشي تنظيم folders.
+الهدف الحقيقي مش تنظيم folders.
 
 الهدف:
 
-# تقليل تأثير التغييرات داخل النظام.
+> **تقليل تأثير التغييرات داخل النظام.**
+
+<table>
+  <thead>
+    <tr>
+      <th>Service Layer تعطيك</th>
+      <th>كيفاش</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Isolated business logic</td>
+      <td>logic في مكان واحد قابل للتعديل</td>
+    </tr>
+    <tr>
+      <td>Reduced coupling</td>
+      <td>UI ما تعرفش شي على API shape</td>
+    </tr>
+    <tr>
+      <td>Simplified UI</td>
+      <td>components كتعرض data جاهزة فقط</td>
+    </tr>
+    <tr>
+      <td>Better reuse</td>
+      <td>نفس service تستعملها من أكثر من hook</td>
+    </tr>
+    <tr>
+      <td>Scalable architecture</td>
+      <td>تزيد features بدون ما تكسر اللي موجود</td>
+    </tr>
+  </tbody>
+</table>

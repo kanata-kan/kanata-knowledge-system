@@ -1,6 +1,7 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { CodeBlock } from "@/components/code/CodeBlock";
 import { TerminalBlock } from "@/components/code/TerminalBlock";
+import { ArchitectureDiagram } from "@/components/mdx/ArchitectureDiagram";
 
 const components = {
   pre: ({ children }: { children: React.ReactNode }) => {
@@ -19,6 +20,7 @@ const components = {
     return <pre>{children}</pre>;
   },
   TerminalBlock,
+  ArchitectureDiagram,
 };
 
 export function EntryBody({ content }: { content: string }) {
