@@ -1,0 +1,341 @@
+---
+title: "Workflow Thinking Lab — 30 Day Roadmap"
+slug: "workflow-thinking-lab-roadmap"
+
+category: "automation"
+type: "workflow"
+
+difficulty: "intermediate"
+
+tags:
+  - "workflow-thinking"
+  - "automation-engineering"
+  - "ai-systems"
+  - "n8n"
+  - "openai"
+  - "express"
+  - "mongodb"
+  - "webhooks"
+  - "nextjs"
+  - "roadmap"
+
+summary: "خريطة عملية لمدة 30 يوم لبناء عقلية workflow engineering عبر مشاريع حقيقية باستخدام n8n وOpenAI وExpress وMongoDB وNext.js."
+
+createdAt: "2026-05-17"
+updatedAt: "2026-05-17"
+
+pinned: true
+
+technologies:
+  - "JavaScript"
+  - "Node.js"
+  - "Express.js"
+  - "Next.js"
+  - "MongoDB"
+  - "n8n"
+  - "OpenAI API"
+
+relatedSlugs: []
+
+status: "active"
+
+## priority: "high"
+---
+
+## القواعد الأساسية
+
+- يوم واحد = output واحدة واضحة
+- ما كاينش تعلم بلا بناء
+- Stack ثابت — ما تتنقلش بين الأدوات
+- كل يوم لازم يخرج شيء ملموس
+
+---
+
+## Stack
+
+```
+JavaScript · Node.js · Express.js · Next.js
+MongoDB · n8n · OpenAI API · Webhooks
+```
+
+---
+
+## Week 1 — Foundations (Days 1–7)
+
+الهدف: تبدأ تفكر بمنطق `trigger → action → output`.
+
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>الموضوع</th>
+      <th>Build</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>01</td>
+      <td>Workflow Mindset</td>
+      <td>اكتب 5 workflows حقيقية من حياتك</td>
+      <td>ملاحظة: 5 workflows موثقة</td>
+    </tr>
+    <tr>
+      <td>02</td>
+      <td>APIs in Practice</td>
+      <td>اختبر public API بـ fetch / Thunder Client</td>
+      <td>API test شغال + ملاحظات</td>
+    </tr>
+    <tr>
+      <td>03</td>
+      <td>Webhooks</td>
+      <td>Express endpoint يستقبل webhook payload</td>
+      <td>endpoint شغال + sample payload</td>
+    </tr>
+    <tr>
+      <td>04</td>
+      <td>First n8n Contact</td>
+      <td>workflow: webhook → response في n8n</td>
+      <td>screenshot أو ملاحظة عن الـ workflow</td>
+    </tr>
+    <tr>
+      <td>05</td>
+      <td>n8n + API Request</td>
+      <td>اتصل بـ public API من n8n وأرسل النتيجة للخطوة التالية</td>
+      <td>automation flow شغال end-to-end</td>
+    </tr>
+    <tr>
+      <td>06</td>
+      <td>First AI Workflow</td>
+      <td>نص يدخل → OpenAI summary يخرج</td>
+      <td>AI summarizer flow بسيط</td>
+    </tr>
+    <tr>
+      <td>07</td>
+      <td>Weekly Review</td>
+      <td>حسّن workflow واحد من الأسبوع</td>
+      <td>ملاحظة مراجعة أسبوعية</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Week 2 — Automation Practice (Days 8–14)
+
+الهدف: تطبيق الأدوات على حالات حقيقية. ينخرج في النهاية mini-project: **AI Support Inbox**.
+
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>الموضوع</th>
+      <th>Build</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>08</td>
+      <td>Telegram Bot Workflow</td>
+      <td>Telegram trigger → AI reply</td>
+      <td>bot workflow أساسي</td>
+    </tr>
+    <tr>
+      <td>09</td>
+      <td>Gmail Workflow</td>
+      <td>new email → AI summary → saved note</td>
+      <td>email automation flow</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>MongoDB Logging</td>
+      <td>احفظ نتائج الـ workflow في MongoDB</td>
+      <td>database records لكل workflow run</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Express + n8n</td>
+      <td>Express route يطلق أو يغذي n8n</td>
+      <td>connected backend flow</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>AI Classification</td>
+      <td>AI يصنف النص: bug / feature / support / urgent</td>
+      <td>classifier flow بسيط</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Small Dashboard</td>
+      <td>Next.js page تعرض workflow runs أو logs</td>
+      <td>basic internal tool UI</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>★ Mini-Project: AI Support Inbox</td>
+      <td>استقبل رسالة → صنفها → احفظها → اعرضها</td>
+      <td>AI Support Inbox — v1</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Week 3 — Engineering the System (Days 15–21)
+
+الهدف: الفرق بين كتابة scripts وبناء أنظمة. ينخرج: **AI Knowledge Processor**.
+
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>الموضوع</th>
+      <th>Build</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>15</td>
+      <td>Workflow Architecture</td>
+      <td>ارسم تصميم workflow مقاوم للفشل (queues / retries)</td>
+      <td>architecture notes</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>Error Handling</td>
+      <td>أضف retry logic أو error capture</td>
+      <td>automation flow أكثر أماناً</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Memory with MongoDB</td>
+      <td>AI يقرأ سجلات سابقة من MongoDB قبل الجواب</td>
+      <td>context-aware automation</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>File Processing</td>
+      <td>رفع ملف → AI summary → حفظ النتيجة</td>
+      <td>file processing workflow</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>Scheduled Jobs</td>
+      <td>شغّل workflow على schedule محدد (cron)</td>
+      <td>scheduled task شغال</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>SaaS Thinking</td>
+      <td>ارسم checklist لما يحتاجه المنتج الحقيقي</td>
+      <td>SaaS checklist موثق</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>★ Mini-Project: AI Knowledge Processor</td>
+      <td>رفع docs → summarize → tag → save history</td>
+      <td>AI Knowledge Processor — v1</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Week 4 — Final Asset (Days 22–30)
+
+الهدف: بناء المشروع النهائي كاملاً ونشره.
+
+> **مهم:** اختر المشروع النهائي من Day 14 أو Day 7 على الأقل — ما تستناش Day 22 باش تقرر. Week 3 كلها تخدم مزيان لو عندك direction واضح من البداية.
+
+**الخيارات:**
+
+- AI CRM
+- AI Knowledge System
+- AI Inbox
+- AI Dev Assistant
+
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>الموضوع</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>22</td>
+      <td>Pick Final Project</td>
+      <td>قرار المشروع + scope موثق</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>Database Design</td>
+      <td>هيكل قاعدة البيانات (collections / relations / logs)</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>Backend Architecture</td>
+      <td>routes / services / workflow layer / AI layer</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>Frontend Dashboard</td>
+      <td>Next.js dashboard شغال</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>AI Features</td>
+      <td>feature AI واحدة مفيدة وحقيقية</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>Automation Layer</td>
+      <td>النظام متصل من A لـ Z</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>Production Thinking</td>
+      <td>env vars / security / monitoring checklist</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>Polish</td>
+      <td>loading states / errors / UX details — polished v1</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>Launch</td>
+      <td>GitHub repo + README + screenshots + demo video</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Deployment
+
+```bash
+# Day 30 — الأوامر الأساسية للإطلاق
+git init
+git add .
+git commit -m "feat: initial release — [project-name] v1"
+git remote add origin https://github.com/kanata-kan/[project-name].git
+git push -u origin main
+```
+
+---
+
+## النتيجة بعد 30 يوم
+
+- عقلية workflow engineering حقيقية
+- 3 mini-projects قابلة للعرض
+- 1 final project منشور على GitHub
+- خبرة عملية بـ: n8n · OpenAI API · Express · MongoDB · Next.js · Webhooks
+
+---
+
+> **ملاحظة مهمة:** الـ roadmap فيها placeholder فارغ في كل يوم للـ sources.
+> خصك تملاه بنفسك عند بدء كل يوم — الـ roadmap هي الهيكل فقط، المراجع مسؤوليتك.

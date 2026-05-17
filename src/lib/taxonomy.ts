@@ -1,5 +1,6 @@
 import type { CategoryInfo } from "@/types/content";
-import { Atom, Network, SquareTerminal } from "lucide-react";
+
+import { Atom, Network, SquareTerminal, Workflow } from "lucide-react";
 
 export const CATEGORIES: CategoryInfo[] = [
   {
@@ -12,6 +13,7 @@ export const CATEGORIES: CategoryInfo[] = [
       surfaceClassName: "bg-sky-500/10",
     },
   },
+
   {
     slug: "cli",
     label: "CLI",
@@ -22,6 +24,7 @@ export const CATEGORIES: CategoryInfo[] = [
       surfaceClassName: "bg-emerald-500/10",
     },
   },
+
   {
     slug: "react",
     label: "React",
@@ -30,6 +33,17 @@ export const CATEGORIES: CategoryInfo[] = [
     tone: {
       iconClassName: "text-cyan-300",
       surfaceClassName: "bg-cyan-500/10",
+    },
+  },
+
+  {
+    slug: "automation",
+    label: "Automation",
+    description: "Workflows, AI systems, webhooks, and automation engineering",
+    icon: Workflow,
+    tone: {
+      iconClassName: "text-violet-300",
+      surfaceClassName: "bg-violet-500/10",
     },
   },
 ];

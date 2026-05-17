@@ -1,5 +1,34 @@
 [
   {
+    "title": "Workflow Thinking Lab — 30 Day Roadmap",
+    "slug": "workflow-thinking-lab-roadmap",
+    "category": "automation",
+    "type": "workflow",
+    "tags": [
+      "workflow-thinking",
+      "automation-engineering",
+      "ai-systems",
+      "n8n",
+      "openai",
+      "express",
+      "mongodb",
+      "webhooks",
+      "nextjs",
+      "roadmap"
+    ],
+    "summary": "خريطة عملية لمدة 30 يوم لبناء عقلية workflow engineering عبر مشاريع حقيقية باستخدام n8n وOpenAI وExpress وMongoDB وNext.js.",
+    "difficulty": "intermediate",
+    "technologies": [
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "Next.js",
+      "MongoDB",
+      "n8n",
+      "OpenAI API"
+    ]
+  },
+  {
     "title": "KKS Content Workflow",
     "slug": "kks-content-workflow",
     "category": "architecture",

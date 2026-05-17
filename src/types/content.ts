@@ -10,7 +10,7 @@ export type EntryType =
 
 export type Difficulty = "beginner" | "intermediate" | "advanced";
 
-export type Category = "architecture" | "cli" | "react";
+export type Category = "architecture" | "cli" | "react" | "automation";
 
 export type EntryMeta = {
   title: string;
